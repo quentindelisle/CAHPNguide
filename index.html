@@ -1,0 +1,1319 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CAHP Nantes — Pas à pas CCF EPS</title>
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#eef0f3">
+<meta name="color-scheme" content="light">
+<meta name="description" content="Guide pas à pas pour les référents Examens CCF EPS — CAHP Nantes">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="CAHP Nantes">
+
+<style>
+:root {
+  --bg:#eef0f3;
+  --panel:#ffffff;
+  --panel-2:#f3f5f8;
+  --text:#1c222c;
+  --muted:#5b6472;
+  --accent:#007FD8;
+  --accent-2:#00A3A6;
+  --highlight:#E07F00;
+  --border:#d9dde4;
+  --danger:#D2274F;
+  --topbar-h:118px;
+  --shadow-soft:0 4px 14px rgba(28,34,44,.08);
+  --shadow-med:0 10px 28px rgba(28,34,44,.12);
+}
+* { box-sizing:border-box; }
+html,body { height:100%; margin:0; background:var(--bg); color:var(--text); font:15px/1.35 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; }
+
+/* ---- click / tap ripple effect (applies to every button-like element) ---- */
+button, .phase, .banque-link, .admin-phase-head {
+  position:relative;
+  overflow:hidden;
+}
+.ripple-fx {
+  position:absolute;
+  border-radius:50%;
+  background:rgba(15,26,46,.16);
+  transform:scale(0);
+  animation:rippleAnim .55s ease-out;
+  pointer-events:none;
+}
+@keyframes rippleAnim { to { transform:scale(1); opacity:0; } }
+
+.topbar { position:relative; min-height:var(--topbar-h); display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:14px; padding:10px 16px; border-bottom:1px solid var(--border); background:linear-gradient(90deg,#ffffff,#f4f6fa 55%,#eef1f6); box-shadow:0 2px 10px rgba(28,34,44,.05); }
+.top-logo { height:84px; width:84px; object-fit:cover; border-radius:16px; box-shadow:var(--shadow-med); flex-shrink:0; }
+.topbar-title { min-width:0; text-align:center; }
+.topbar h1 { margin:0; font-size:19px; font-weight:800; letter-spacing:.1px; }
+.topbar-actions { display:flex; gap:8px; align-items:center; flex-wrap:wrap; justify-content:flex-end; }
+.topbar-btn { padding:9px 14px; border-radius:10px; border:1px solid var(--border); background:linear-gradient(180deg,#ffffff,#eef1f6); color:var(--text); cursor:pointer; font-size:13px; font-weight:700; white-space:nowrap; display:inline-flex; align-items:center; gap:6px; box-shadow:var(--shadow-soft); text-decoration:none; }
+.topbar-btn:hover { border-color:var(--accent); color:var(--accent); }
+.topbar-btn--install { display:none; border-color:var(--accent-2); color:var(--accent-2); }
+.topbar-btn--install.show { display:inline-flex; }
+.topbar-btn--feature { border:none; color:#fff; font-size:13.5px; padding:11px 18px; box-shadow:0 6px 16px rgba(0,0,0,.18); transform:translateY(0); transition:transform .12s ease, box-shadow .12s ease; white-space:normal; text-align:center; max-width:260px; line-height:1.25; }
+.topbar-btn--feature:hover { color:#fff; transform:translateY(-2px); box-shadow:0 10px 22px rgba(0,0,0,.24); }
+.topbar-btn--banque { background:linear-gradient(135deg,#007FD8,#00B7BA); }
+.topbar-btn--contact { background:linear-gradient(135deg,#FC3661,#8939C1); }
+.topbar-btn--inapt { background:linear-gradient(135deg,#FE9901,#FC3661); }
+.wrapper { display:grid; grid-template-columns:320px 1fr; height:calc(100vh - var(--topbar-h)); }
+.sidebar { background:linear-gradient(180deg,var(--panel),var(--panel-2)); border-right:1px solid var(--border); padding:12px; overflow:auto; }
+.button-primary { width:100%; padding:14px 12px; min-height:84px; font-size:15px; line-height:1.25; font-weight:700; background:linear-gradient(180deg,#ffffff,#f2f4f8); border:1px solid var(--border); border-radius:12px; box-shadow:var(--shadow-soft); color:var(--text); text-align:left; display:flex; align-items:center; gap:10px; transition:all .15s ease; cursor:pointer; }
+.button-primary img { height:26px; width:auto; margin-left:auto; border-radius:4px; }
+.button-primary:hover { transform:translateY(-1px); box-shadow:var(--shadow-med); }
+.button-primary.active { outline:2px solid var(--accent); }
+.section-title { margin:12px 6px 6px; color:var(--muted); font-weight:700; font-size:12px; letter-spacing:.04em; text-transform:uppercase; }
+.phase { border:1px solid var(--border); margin-bottom:10px; border-radius:14px; background:linear-gradient(180deg,#ffffff,#f5f7fa); overflow:hidden; }
+.phase-header { cursor:pointer; }
+.phase-header { display:flex; flex-direction:column; align-items:flex-start; gap:8px; width:100%; padding:14px 14px; background:transparent; color:var(--text); border:0; text-align:left; }
+.phase-title { font-size:14.5px; font-weight:800; line-height:1.3; white-space:normal; }
+.phase-meta-row { display:flex; align-items:center; justify-content:space-between; width:100%; gap:8px; }
+.logo-chip { display:inline-flex; align-items:center; justify-content:center; background:#fff; border:1px solid var(--border); border-radius:8px; padding:4px 8px; box-shadow:var(--shadow-soft); line-height:0; flex-shrink:0; }
+.logo-chip--inline { margin-left:6px; vertical-align:middle; }
+.logo-img { height:16px; width:auto; object-fit:contain; display:block; }
+.step-count-badge { display:inline-flex; align-items:center; gap:5px; font-size:11.5px; font-weight:700; color:var(--muted); background:#f0f2f6; border:1px solid var(--border); border-radius:999px; padding:3px 10px; cursor:pointer; font-family:inherit; }
+.step-count-badge:hover { filter:brightness(0.97); }
+.step-count-badge .chev { font-size:9px; transition:transform .15s ease; margin-left:1px; }
+.phase.expanded .step-count-badge .chev { transform:rotate(180deg); }
+.phase-steps-list { display:none; border-top:1px solid var(--border); background:rgba(28,34,44,.02); padding:6px; }
+.phase.expanded .phase-steps-list { display:block; }
+.phase-step-item { display:block; width:100%; text-align:left; background:none; border:none; padding:9px 10px; border-radius:8px; font-size:12.5px; color:var(--text); cursor:pointer; font-family:inherit; line-height:1.35; }
+.phase-step-item:hover { background:#eef1f6; }
+.phase-step-item:not(:last-child) { margin-bottom:2px; }
+.step-count-badge .dot { width:6px; height:6px; border-radius:50%; background:var(--accent); flex-shrink:0; }
+.main { display:flex; flex-direction:column; height:calc(100vh - var(--topbar-h)); }
+.content { padding:18px 22px; overflow:auto; flex:1; background:
+    radial-gradient(600px 140px at 10% 8%, rgba(0,127,216,.06) 0%, transparent 70%),
+    radial-gradient(600px 140px at 82% 88%, rgba(0,163,166,.06) 0%, transparent 70%);
+}
+.content h2 { margin:0 0 8px; font-size:19px; }
+.content h3 { margin:16px 0 8px; font-size:15px; color:var(--muted); display:flex; align-items:center; gap:8px; justify-content:space-between; scroll-margin-top:18px; border-radius:8px; }
+.content h3.step-flash { animation:stepFlash 1.5s ease; }
+@keyframes stepFlash { 0% { background:rgba(0,127,216,.16); } 100% { background:transparent; } }
+.content h3 .step-title-text { flex:1; font-weight:800; }
+.content ul { margin:8px 0 0 18px; padding:0; }
+.content li { margin:4px 0; }
+.card { background:#ffffff; border:1px solid var(--border); border-radius:14px; padding:18px; box-shadow:var(--shadow-soft); }
+.card.themed { border-width:2px; }
+.notice { margin:8px 0 12px; padding:12px 14px; border-radius:10px; border:1px solid var(--border); background:#f6f8fb; }
+.image-box { height:calc(100vh - var(--topbar-h) - 32px); display:flex; align-items:center; justify-content:center; }
+.image-box img { max-width:100%; max-height:100%; width:auto; height:auto; object-fit:contain; border-radius:12px; border:1px solid var(--border); box-shadow:var(--shadow-med); background:#fff; }
+.action { padding:10px 14px; border-radius:10px; border:1px solid var(--border); background:linear-gradient(180deg,#ffffff,#eef1f6); color:var(--text); cursor:pointer; box-shadow:var(--shadow-soft); font-weight:600; }
+.action.primary { outline:2px solid var(--accent); }
+.action:disabled { opacity:.45; cursor:not-allowed; }
+.current-phase { outline:2px solid var(--highlight); }
+a { color:var(--accent); text-decoration:underline; }
+.small-logo { height:16px; width:auto; object-fit:contain; display:block; }
+hr.sep { border:0; border-top:1px solid var(--border); margin:12px 0; }
+.warn-ico { height:16px; width:auto; vertical-align:middle; margin-right:6px; }
+.soft { color:var(--muted); font-style:italic; }
+@media (max-width: 760px) {
+  .wrapper { grid-template-columns:1fr; }
+  .sidebar { display:none; }
+  #adminPanel { width:100vw; }
+  .topbar h1 { font-size:15px; }
+}
+
+.content[data-phase="0"] .card.themed { border-color:#00B7BA; box-shadow:0 8px 22px #00B7BA26, var(--shadow-soft); }
+.content[data-phase="0"] .notice { border-color:#00B7BA55; background:#00B7BA0d; }
+.phase[data-i="0"] { border-left:5px solid #00B7BA; }
+.phase[data-i="0"] .phase-header { background: linear-gradient(180deg, #00B7BA22, transparent); }
+.phase[data-i="0"].current-phase { box-shadow:0 0 0 2px #00B7BAaa, 0 10px 24px #00B7BA40; }
+.phase[data-i="0"] .phase-title { color:#008385; }
+.phase[data-i="0"] .step-count-badge { background:#00B7BA18; border-color:#00B7BA55; color:#00B7BA; }
+.phase[data-i="0"] .step-count-badge .dot { background:#00B7BA; }
+.content[data-phase="0"] h3 .step-title-text { color:#008385; }
+
+.content[data-phase="1"] .card.themed { border-color:#FE9901; box-shadow:0 8px 22px #FE990126, var(--shadow-soft); }
+.content[data-phase="1"] .notice { border-color:#FE990155; background:#FE99010d; }
+.phase[data-i="1"] { border-left:5px solid #FE9901; }
+.phase[data-i="1"] .phase-header { background: linear-gradient(180deg, #FE990122, transparent); }
+.phase[data-i="1"].current-phase { box-shadow:0 0 0 2px #FE9901aa, 0 10px 24px #FE990140; }
+.phase[data-i="1"] .phase-title { color:#A76400; }
+.phase[data-i="1"] .step-count-badge { background:#FE990118; border-color:#FE990155; color:#FE9901; }
+.phase[data-i="1"] .step-count-badge .dot { background:#FE9901; }
+.content[data-phase="1"] h3 .step-title-text { color:#A76400; }
+
+.content[data-phase="2"] .card.themed { border-color:#FC3661; box-shadow:0 8px 22px #FC366126, var(--shadow-soft); }
+.content[data-phase="2"] .notice { border-color:#FC366155; background:#FC36610d; }
+.phase[data-i="2"] { border-left:5px solid #FC3661; }
+.phase[data-i="2"] .phase-header { background: linear-gradient(180deg, #FC366122, transparent); }
+.phase[data-i="2"].current-phase { box-shadow:0 0 0 2px #FC3661aa, 0 10px 24px #FC366140; }
+.phase[data-i="2"] .phase-title { color:#FC3661; }
+.phase[data-i="2"] .step-count-badge { background:#FC366118; border-color:#FC366155; color:#FC3661; }
+.phase[data-i="2"] .step-count-badge .dot { background:#FC3661; }
+.content[data-phase="2"] h3 .step-title-text { color:#DD2F55; }
+
+.content[data-phase="3"] .card.themed { border-color:#8939C1; box-shadow:0 8px 22px #8939C126, var(--shadow-soft); }
+.content[data-phase="3"] .notice { border-color:#8939C155; background:#8939C10d; }
+.phase[data-i="3"] { border-left:5px solid #8939C1; }
+.phase[data-i="3"] .phase-header { background: linear-gradient(180deg, #8939C122, transparent); }
+.phase[data-i="3"].current-phase { box-shadow:0 0 0 2px #8939C1aa, 0 10px 24px #8939C140; }
+.phase[data-i="3"] .phase-title { color:#8939C1; }
+.phase[data-i="3"] .step-count-badge { background:#8939C118; border-color:#8939C155; color:#8939C1; }
+.phase[data-i="3"] .step-count-badge .dot { background:#8939C1; }
+.content[data-phase="3"] h3 .step-title-text { color:#8939C1; }
+
+.content[data-phase="4"] .card.themed { border-color:#007FD8; box-shadow:0 8px 22px #007FD826, var(--shadow-soft); }
+.content[data-phase="4"] .notice { border-color:#007FD855; background:#007FD80d; }
+.phase[data-i="4"] { border-left:5px solid #007FD8; }
+.phase[data-i="4"] .phase-header { background: linear-gradient(180deg, #007FD822, transparent); }
+.phase[data-i="4"].current-phase { box-shadow:0 0 0 2px #007FD8aa, 0 10px 24px #007FD840; }
+.phase[data-i="4"] .phase-title { color:#0079CF; }
+.phase[data-i="4"] .step-count-badge { background:#007FD818; border-color:#007FD855; color:#007FD8; }
+.phase[data-i="4"] .step-count-badge .dot { background:#007FD8; }
+.content[data-phase="4"] h3 .step-title-text { color:#0079CF; }
+
+/* ===== MODALS (Banque de référentiels / Demande d'informations) ===== */
+.modal-overlay { position:fixed; inset:0; background:rgba(20,28,42,.5); z-index:1050; display:none; align-items:center; justify-content:center; padding:20px; }
+.modal-overlay.open { display:flex; }
+.modal-panel { background:#fff; border:1px solid var(--border); border-radius:16px; width:min(540px,96vw); max-height:88vh; overflow:auto; box-shadow:0 24px 60px rgba(20,28,42,.28); }
+.modal-header { display:flex; align-items:center; justify-content:space-between; padding:16px 18px; border-bottom:1px solid var(--border); background:linear-gradient(90deg,#f7f9fc,#eef2f7); border-radius:16px 16px 0 0; }
+.modal-header h2 { margin:0; font-size:17px; }
+.modal-close { background:#fff; border:1px solid var(--border); border-radius:8px; padding:6px 10px; cursor:pointer; color:var(--text); font-size:14px; }
+.modal-close:hover { border-color:var(--danger); color:var(--danger); }
+.modal-body { padding:18px; }
+.modal-hint { font-size:12.5px; color:var(--muted); background:#f2f6fb; border:1px solid var(--border); border-radius:10px; padding:10px 12px; margin:0 0 14px; }
+.modal-footer { padding:14px 18px; border-top:1px solid var(--border); display:flex; justify-content:flex-end; align-items:center; gap:10px; flex-wrap:wrap; }
+.modal-primary-btn { padding:10px 18px; border-radius:10px; border:1px solid var(--accent); background:var(--accent); color:#fff; font-weight:800; cursor:pointer; font-size:13.5px; }
+.modal-primary-btn:hover { filter:brightness(1.08); }
+.modal-error { color:var(--danger); font-size:12px; margin-right:auto; font-weight:600; }
+.checkbox-row { display:flex; align-items:center; gap:8px; font-size:13.5px; margin:8px 0; cursor:pointer; font-weight:500; }
+.checkbox-row input { width:16px; height:16px; accent-color:var(--accent); }
+.banque-links { display:flex; flex-direction:column; gap:10px; }
+.banque-link { display:flex; align-items:center; gap:12px; padding:12px 14px; border:1px solid var(--border); border-radius:12px; text-decoration:none; color:var(--text); background:linear-gradient(180deg,#fff,#f6f8fb); transition:transform .12s ease, border-color .12s ease; }
+.banque-link:hover { border-color:var(--accent); transform:translateY(-1px); box-shadow:var(--shadow-soft); }
+.banque-link.disabled { opacity:.5; cursor:not-allowed; }
+.banque-badge { flex-shrink:0; min-width:70px; text-align:center; padding:7px 8px; border-radius:8px; background:var(--accent); color:#fff; font-weight:800; font-size:12px; }
+.banque-label { font-size:14px; font-weight:700; }
+.banque-sub { display:block; font-size:11.5px; color:var(--muted); font-weight:500; margin-top:2px; }
+
+.inapt-item { border:1px solid var(--border); border-radius:12px; padding:14px 16px; margin-bottom:12px; background:#fff; }
+.inapt-item:last-child { margin-bottom:0; }
+.inapt-item-head { display:flex; align-items:center; gap:10px; margin-bottom:8px; flex-wrap:wrap; }
+.inapt-date { font-size:10.5px; font-weight:800; text-transform:uppercase; letter-spacing:.03em; color:#fff; background:linear-gradient(135deg,#FE9901,#FC3661); padding:4px 10px; border-radius:999px; flex-shrink:0; white-space:nowrap; }
+.inapt-title { margin:0; font-size:15px; font-weight:800; }
+.inapt-content { font-size:13.5px; line-height:1.55; }
+.inapt-content p { margin:6px 0; }
+.inapt-content ul { margin:6px 0 0 18px; }
+.inapt-content h4 { margin:16px 0 6px; font-size:13.5px; font-weight:800; color:var(--text); }
+.inapt-content .ref-block { background:#f6f8fb; border:1px solid var(--border); border-radius:8px; padding:10px 12px; margin:8px 0; font-size:12px; line-height:1.5; }
+.inapt-content .ref-block p { margin:2px 0; }
+.inapt-content table { width:100%; border-collapse:collapse; margin:10px 0; font-size:12px; }
+.inapt-content th, .inapt-content td { border:1px solid var(--border); padding:6px 8px; text-align:left; vertical-align:top; }
+.inapt-content th { background:#f4f6f9; font-weight:800; white-space:nowrap; }
+.inapt-content td:first-child, .inapt-content th:first-child { white-space:nowrap; font-weight:700; }
+.inapt-content dl { margin:6px 0 0; }
+.inapt-content dt { font-weight:800; margin-top:6px; }
+.inapt-content dd { margin:2px 0 0 0; }
+.inapt-empty { text-align:center; padding:30px 10px; color:var(--muted); font-size:13.5px; }
+
+/* ===== UPDATE BANNER ===== */
+#updateBanner { position:fixed; left:50%; bottom:60px; transform:translate(-50%, 20px); opacity:0; pointer-events:none; transition:all .25s ease; background:#fff; border:1px solid var(--accent); border-radius:12px; padding:10px 14px; display:flex; gap:12px; align-items:center; box-shadow:var(--shadow-med); z-index:1200; font-size:13px; }
+#updateBanner.show { opacity:1; transform:translate(-50%, 0); pointer-events:auto; }
+#updateBanner button { padding:6px 12px; border-radius:8px; border:1px solid var(--accent); background:var(--accent); color:#fff; font-weight:700; cursor:pointer; font-size:12.5px; }
+
+/* ===== ADMIN PANEL ===== */
+#adminOverlay { position:fixed; inset:0; background:rgba(20,28,42,.5); z-index:1000; display:none; }
+#adminOverlay.open { display:block; }
+#adminPanel { position:fixed; top:0; right:0; bottom:0; width:min(880px, 96vw); background:#fbfcfe; border-left:1px solid var(--border); z-index:1001; display:flex; flex-direction:column; box-shadow:-16px 0 40px rgba(20,28,42,.25); transform:translateX(100%); transition:transform .2s ease; }
+#adminOverlay.open #adminPanel { transform:translateX(0); }
+.admin-header { padding:16px 20px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; background:linear-gradient(90deg,#f7f9fc,#eef2f7); }
+.admin-header h2 { margin:0; font-size:18px; }
+.admin-header .sub { color:var(--muted); font-size:12px; margin-top:2px; }
+.admin-close { background:#fff; border:1px solid var(--border); color:var(--text); border-radius:8px; padding:8px 12px; cursor:pointer; font-size:16px; }
+.admin-close:hover { border-color:var(--danger); color:var(--danger); }
+.admin-toolbar { padding:12px 20px; border-bottom:1px solid var(--border); display:flex; gap:8px; flex-wrap:wrap; background:#f4f6f9; }
+.admin-toolbar button { padding:8px 12px; border-radius:8px; border:1px solid var(--border); background:#fff; color:var(--text); cursor:pointer; font-size:12.5px; font-weight:600; }
+.admin-toolbar button.primary { border-color:var(--accent); color:var(--accent); font-weight:800; }
+.admin-toolbar button.danger { border-color:var(--danger); color:var(--danger); }
+.admin-toolbar input[type=file] { display:none; }
+.admin-body { flex:1; overflow:auto; padding:18px 20px 90px; }
+.admin-config { border:1px solid var(--border); border-radius:14px; padding:16px; margin-bottom:20px; background:#fff; }
+.admin-config h3 { margin:0 0 12px; font-size:14px; }
+.admin-phase { border:1px solid var(--border); border-radius:14px; margin-bottom:18px; background:#fff; overflow:hidden; }
+.admin-phase-head { display:flex; align-items:center; gap:10px; padding:12px 14px; background:#f4f6f9; border-bottom:1px solid var(--border); cursor:pointer; }
+.admin-phase-head .idx { width:26px; height:26px; border-radius:50%; background:var(--accent); color:#fff; font-weight:800; font-size:13px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.admin-phase-head .head-title { flex:1; font-weight:700; font-size:14px; color:var(--text); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.admin-phase-head .chev { color:var(--muted); transition:transform .15s ease; }
+.admin-phase.collapsed .chev { transform:rotate(-90deg); }
+.admin-phase-body { padding:14px; display:block; }
+.admin-phase.collapsed .admin-phase-body { display:none; }
+.admin-field { margin-bottom:12px; }
+.admin-field label { display:block; font-size:11.5px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.03em; margin-bottom:5px; }
+.admin-field input[type=text], .admin-field input[type=email], .admin-field select, .admin-field textarea { width:100%; padding:9px 10px; border-radius:8px; border:1px solid var(--border); background:#fff; color:var(--text); font-size:13.5px; font-family:inherit; }
+.admin-field textarea { resize:vertical; min-height:70px; font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; font-size:12.5px; line-height:1.5; }
+.admin-field textarea.html-editor { min-height:150px; }
+.admin-row { display:flex; gap:10px; flex-wrap:wrap; }
+.admin-row > * { flex:1; min-width:180px; }
+.admin-step { border:1px dashed var(--border); border-radius:10px; padding:12px; margin-bottom:12px; background:#fafbfd; position:relative; }
+.admin-step-head { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+.admin-step-head .step-idx { font-size:11px; color:var(--muted); font-weight:700; white-space:nowrap; }
+.admin-mini-btns { display:flex; gap:6px; margin-left:auto; }
+.admin-mini-btns button { padding:5px 9px; font-size:11px; border-radius:6px; border:1px solid var(--border); background:#fff; color:var(--text); cursor:pointer; }
+.admin-mini-btns button:hover { border-color:var(--accent); }
+.admin-mini-btns button.danger:hover { border-color:var(--danger); color:var(--danger); }
+.admin-add-step { width:100%; padding:9px; border-radius:8px; border:1px dashed var(--accent); background:transparent; color:var(--accent); cursor:pointer; font-size:12.5px; font-weight:700; margin-top:4px; }
+.admin-add-step:hover { background:rgba(0,127,216,.06); }
+.admin-phase-actions { display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; }
+.admin-phase-actions button { padding:7px 11px; font-size:11.5px; border-radius:7px; border:1px solid var(--border); background:#fff; color:var(--text); cursor:pointer; }
+.admin-phase-actions button.danger:hover { border-color:var(--danger); color:var(--danger); }
+.admin-add-phase { width:100%; padding:14px; border-radius:12px; border:2px dashed var(--accent-2); background:transparent; color:var(--accent-2); cursor:pointer; font-size:14px; font-weight:800; margin-top:6px; }
+.admin-add-phase:hover { background:rgba(0,163,166,.06); }
+.admin-footer { position:sticky; bottom:0; padding:12px 20px; border-top:1px solid var(--border); background:#fbfcfe; display:flex; gap:10px; justify-content:flex-end; align-items:center; flex-wrap:wrap; }
+.admin-footer .status { margin-right:auto; font-size:12px; color:var(--accent-2); opacity:0; transition:opacity .2s ease; font-weight:700; }
+.admin-footer .status.show { opacity:1; }
+.admin-save-btn { padding:11px 20px; border-radius:10px; border:1px solid var(--accent); background:var(--accent); color:#fff; font-weight:800; cursor:pointer; font-size:14px; }
+.admin-save-btn:hover { filter:brightness(1.08); }
+.admin-hint { font-size:12px; color:var(--muted); margin:0 0 14px; padding:10px 12px; border:1px solid var(--border); border-radius:8px; background:#f4f6f9; }
+.admin-meta { font-size:11.5px; color:var(--muted); margin:0 0 14px; display:flex; gap:14px; flex-wrap:wrap; }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <img class="top-logo" src="assets/logo-cahpnantes.jpg" alt="CAHP Nantes">
+  <div class="topbar-title">
+    <h1>Les Examens en EPS — Pas à pas CCF 2027</h1>
+  </div>
+  <div class="topbar-actions">
+    <button class="topbar-btn topbar-btn--install" id="btnInstall" title="Installer l'application sur cet appareil">⬇️ Installer</button>
+    <button class="topbar-btn topbar-btn--feature topbar-btn--banque" id="btnOpenBanque" title="Accéder aux référentiels par examen">📚 Consulter la Banque de référentiels</button>
+    <button class="topbar-btn topbar-btn--feature topbar-btn--contact" id="btnOpenContact" title="Demander des informations complémentaires">🏫 Demander l'état des lieux des référentiels et les statistiques pour mon établissement</button>
+    <button class="topbar-btn topbar-btn--feature topbar-btn--inapt" id="btnOpenInaptitudes" title="Consulter les dernières nouveautés concernant les inaptitudes">🩹 Nouveautés concernant les Inaptitudes</button>
+    <button class="topbar-btn" id="btnOpenAdmin" title="Modifier tous les textes et rubriques">⚙️ Administration</button>
+  </div>
+</header>
+<div class="wrapper">
+  <aside class="sidebar">
+    <button id="btnIntro" class="button-primary active">
+      Détail des applications utilisées pour évaluer en CCF
+      <img src="assets/intro-apps.png" alt="">
+    </button>
+    <div class="section-title">Étapes</div>
+    <div id="phases"></div>
+  </aside>
+  <main class="main">
+    <div class="content" id="content">
+      <div class="card image-box">
+        <img id="introImg" src="assets/intro-apps.png" alt="">
+      </div>
+    </div>
+  </main>
+</div>
+
+<div id="updateBanner">
+  <span>Une nouvelle version du guide est disponible.</span>
+  <button id="btnUpdateReload">Actualiser</button>
+</div>
+
+<!-- ===== MODAL : Banque de référentiels ===== -->
+<div id="banqueOverlay" class="modal-overlay">
+  <div class="modal-panel">
+    <div class="modal-header">
+      <h2>📚 Banque de référentiels</h2>
+      <button class="modal-close" id="btnCloseBanque">✕</button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-hint">Accédez au pad de référentiels correspondant à votre examen. Les liens sont configurés depuis l'interface Administration.</p>
+      <div class="banque-links">
+        <a class="banque-link" id="linkCap" href="#" target="_blank" rel="noopener">
+          <span class="banque-badge">CAP</span>
+          <span><span class="banque-label">Référentiels CAP</span><span class="banque-sub" id="subCap"></span></span>
+        </a>
+        <a class="banque-link" id="linkBacPro" href="#" target="_blank" rel="noopener">
+          <span class="banque-badge">Bac Pro</span>
+          <span><span class="banque-label">Référentiels Baccalauréat Professionnel</span><span class="banque-sub" id="subBacPro"></span></span>
+        </a>
+        <a class="banque-link" id="linkBacGt" href="#" target="_blank" rel="noopener">
+          <span class="banque-badge">Bac GT</span>
+          <span><span class="banque-label">Référentiels Baccalauréat Général et Technologique</span><span class="banque-sub" id="subBacGt"></span></span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL : Demande d'informations ===== -->
+<div id="contactOverlay" class="modal-overlay">
+  <div class="modal-panel">
+    <div class="modal-header">
+      <h2>🏫 Informations pour Mon Établissement</h2>
+      <button class="modal-close" id="btnCloseContact">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-hint" id="contactSuccessBanner" style="display:none; border-color:var(--accent-2); background:#eafaf6;">
+        ✅ Votre demande a bien été envoyée à <strong id="successControllerName">—</strong>. Vous recevrez une réponse à l'adresse indiquée.
+      </div>
+      <div id="contactFormFields">
+        <p class="modal-hint" id="contactIntroHint">
+          Ce formulaire transmet votre demande à la CAHPN. Il vous suffit de cliquer sur Envoyer.
+        </p>
+        <div class="admin-field">
+          <label>Je souhaite recevoir</label>
+          <label class="checkbox-row"><input type="checkbox" id="chkEtat"> L'état des lieux de mes référentiels</label>
+          <label class="checkbox-row"><input type="checkbox" id="chkStats"> Les statistiques de mon établissement</label>
+        </div>
+        <div class="admin-field">
+          <label>Nom de l'établissement</label>
+          <input type="text" id="inpEtablissement" placeholder="Ex : Lycée Monge La Chauvinière">
+        </div>
+        <div class="admin-field">
+          <label>Email professionnel</label>
+          <input type="email" id="inpEmailPro" placeholder="prenom.nom@ac-nantes.fr">
+        </div>
+        <div class="admin-field" id="contactPreviewWrap" style="display:none;">
+          <label>Aperçu du message (si l'envoi échoue, copiez ce texte)</label>
+          <textarea id="contactPreview" readonly></textarea>
+          <button type="button" class="admin-add-step" id="btnCopyContact" style="margin-top:8px;">📋 Copier le message</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <span class="modal-error" id="contactError"></span>
+      <button class="modal-primary-btn" id="btnSendContact">✉️ Envoyer la demande</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL : Nouveautés — Inaptitudes ===== -->
+<div id="inaptitudesOverlay" class="modal-overlay">
+  <div class="modal-panel" style="width:min(720px,96vw);">
+    <div class="modal-header">
+      <h2>🩹 Nouveautés — Inaptitudes</h2>
+      <button class="modal-close" id="btnCloseInaptitudes">✕</button>
+    </div>
+    <div class="modal-body" id="inaptitudesBody"></div>
+  </div>
+</div>
+
+<!-- ===== MODAL : Connexion Administration ===== -->
+<div id="adminLoginOverlay" class="modal-overlay">
+  <div class="modal-panel" style="width:min(380px,96vw);">
+    <div class="modal-header">
+      <h2>🔐 Administration</h2>
+      <button class="modal-close" id="btnCloseAdminLogin">✕</button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-hint">Cet espace est réservé. Connectez-vous pour modifier le contenu.</p>
+      <div class="admin-field">
+        <label>Identifiant</label>
+        <input type="text" id="inpAdminUser" autocomplete="username" placeholder="Identifiant">
+      </div>
+      <div class="admin-field">
+        <label>Mot de passe</label>
+        <input type="password" id="inpAdminPass" autocomplete="current-password" placeholder="Mot de passe">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <span class="modal-error" id="adminLoginError"></span>
+      <button class="modal-primary-btn" id="btnAdminLoginSubmit">Se connecter</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ADMIN OVERLAY ===== -->
+<div id="adminOverlay">
+  <div id="adminPanel">
+    <div class="admin-header">
+      <div>
+        <h2>⚙️ Administration du contenu</h2>
+        <div class="sub">Modifiez les phases, étapes, textes, liens et paramètres. Les changements sont enregistrés dans ce navigateur.</div>
+      </div>
+      <button class="admin-close" id="btnCloseAdmin">✕ Fermer</button>
+    </div>
+    <div class="admin-toolbar">
+      <button class="primary" id="btnAdminSaveTop">💾 Enregistrer</button>
+      <button id="btnExportJson">⬇️ Exporter (JSON)</button>
+      <button id="btnImportJsonTrigger">⬆️ Importer (JSON)</button>
+      <input type="file" id="btnImportJson" accept="application/json">
+      <button id="btnCheckUpdate">🔄 Vérifier les mises à jour</button>
+      <button class="danger" id="btnResetDefault">↺ Réinitialiser (contenu d'origine)</button>
+    </div>
+    <div class="admin-body" id="adminBody">
+      <div class="admin-config">
+        <h3>⚙️ Configuration générale</h3>
+        <div class="admin-field">
+          <label>Email de contact (reçoit les demandes d'informations)</label>
+          <input type="text" id="cfgContactEmail" placeholder="examens.eps@ac-nantes.fr">
+        </div>
+        <div class="admin-row">
+          <div class="admin-field">
+            <label>Lien Banque de référentiels — CAP</label>
+            <input type="text" id="cfgBanqueCap" placeholder="https://...">
+          </div>
+          <div class="admin-field">
+            <label>Lien Banque de référentiels — Bac Pro</label>
+            <input type="text" id="cfgBanqueBacPro" placeholder="https://...">
+          </div>
+          <div class="admin-field">
+            <label>Lien Banque de référentiels — Bac GT</label>
+            <input type="text" id="cfgBanqueBacGt" placeholder="https://...">
+          </div>
+        </div>
+      </div>
+      <div class="admin-config">
+        <h3>📧 Envoi automatique et silencieux (Web3Forms)</h3>
+        <p class="admin-hint" style="margin:0 0 12px;">
+          Par défaut, le bouton "Envoyer" du formulaire de contact ouvre la messagerie du visiteur (lien <code>mailto:</code>) — ce qui ne fonctionne pas bien avec Zimbra.
+          En renseignant la clé ci-dessous, l'envoi devient automatique et silencieux : la demande part directement via <a href="https://web3forms.com" target="_blank" rel="noopener">Web3Forms</a> vers <code>examens.eps@ac-nantes.fr</code>, sans ouvrir aucune application mail — et sans passer par un compte Gmail personnel.
+        </p>
+        <div class="admin-field">
+          <label>Clé d'accès Web3Forms (Access Key)</label>
+          <input type="text" id="cfgWeb3formsKey" placeholder="ex : a1b2c3d4-e5f6-7890-abcd-ef1234567890">
+        </div>
+        <p class="admin-hint" style="margin:8px 0 0;">
+          <strong>Comment obtenir cette clé :</strong> allez sur <a href="https://web3forms.com" target="_blank" rel="noopener">web3forms.com</a> → "Create your Form — Free" → renseignez directement <code>examens.eps@ac-nantes.fr</code> comme adresse de réception → confirmez via le lien reçu par email sur cette boîte → copiez la clé d'accès générée et collez-la ci-dessus.
+          Cette clé n'est pas secrète (elle fonctionne comme un alias vers votre adresse email, Web3Forms le confirme dans sa documentation) : elle peut rester visible dans le code de la page sans risque.
+          Si le champ est vide, l'envoi repasse automatiquement par <code>mailto:</code>.
+        </p>
+      </div>
+      <div class="admin-config">
+        <h3>🩹 Nouveautés — Inaptitudes</h3>
+        <p class="admin-hint" style="margin:0 0 12px;">
+          Ce contenu s'affiche dans la fenêtre "🩹 Nouveautés — Inaptitudes" accessible depuis le bandeau. Ajoutez une entrée par nouveauté, avec une date/période, un titre, et un texte (HTML simple accepté).
+        </p>
+        <div id="adminInaptitudes"></div>
+        <button class="admin-add-phase" id="btnAddInapt">➕ Ajouter une nouveauté</button>
+      </div>
+      <p class="admin-hint">
+        Chaque <strong>phase</strong> correspond à un bouton de la barre latérale. Chaque phase contient un <strong>logo</strong> (ds / cyclades / santorin),
+        un texte d'introduction optionnel, et une liste d'<strong>étapes</strong>. Le texte des étapes accepte du HTML simple
+        (&lt;p&gt;, &lt;ul&gt;/&lt;li&gt;, &lt;strong&gt;, &lt;a href="..."&gt;, etc.) — c'est ce qui permet d'insérer facilement vos liens.
+      </p>
+      <p class="admin-meta">
+        <span>📦 Application : <strong id="metaAppVersion">—</strong></span>
+        <span>💾 Contenu : <strong id="metaSource">—</strong></span>
+      </p>
+      <div id="adminPhases"></div>
+      <button class="admin-add-phase" id="btnAddPhase">➕ Ajouter une phase</button>
+    </div>
+    <div class="admin-footer">
+      <span class="status" id="adminStatus">Modifications enregistrées ✓</span>
+      <button id="btnAdminCancel">Annuler</button>
+      <button class="admin-save-btn" id="btnAdminSave">💾 Enregistrer et appliquer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'ccf_eps_guide_data_v1';
+const CONFIG_KEY = 'ccf_eps_guide_config_v1';
+const INAPT_KEY = 'ccf_eps_guide_inaptitudes_v1';
+const APP_VERSION = '2026.2';
+
+const DEFAULT_DATA = [{"title": "Phase 1 : Déclaration de l’offre d’APSA certificatives via « Démarche Numérique »", "logo": "ds", "intro_html": "\n<div class=\"notice\">\nLes établissements doivent pour chaque examen déclarer l'ensemble de leur offre certificative et déposer les référentiels n'ayant pas obtenu le statut \"Validé\" lors des sessions précédentes de l'examen (\"Non Validés\", \"Validés Si\" et \"Nouveaux\").\n</div>\n", "steps": [{"title": "Etape 1 : Pour la Commission examens (CAHPN) d’octobre", "html": "<p>Le référent Examens créée un dossier par examen sur la plateforme « Démarche Numérique » avant la date limite du 9 Octobre 2026 minuit.</p>\n<ul>\n  <li><a href=\"https://www.demarches-simplifiees.fr/commencer/bacgt-ac-nantes-session2027\" target=\"_blank\" rel=\"noopener\">https://www.demarches-simplifiees.fr/commencer/bacgt-ac-nantes-session2027</a></li>\n  <li><a href=\"https://www.demarches-simplifiees.fr/commencer/bacpro-ac-nantes-session2027\" target=\"_blank\" rel=\"noopener\">https://www.demarches-simplifiees.fr/commencer/bacpro-ac-nantes-session2027</a></li>\n  <li><a href=\"https://www.demarches-simplifiees.fr/commencer/cap-ac-nantes-session2027\" target=\"_blank\" rel=\"noopener\">https://www.demarches-simplifiees.fr/commencer/cap-ac-nantes-session2027</a></li>\n  <li><a href=\"https://www.demarches-simplifiees.fr/commencer/aefe-ac-nantes-session2027\" target=\"_blank\" rel=\"noopener\">https://www.demarches-simplifiees.fr/commencer/aefe-ac-nantes-session2027</a></li>\n</ul>\n<p>Pour cette étape : le référent examens veille à :</p>\n<ul>\n  <li>Déclarer les APSA supports pour l’évaluation à l’examen.</li>\n  <li>Déposer les référentiels « validés sous conditions » et « non validés » lors des sessions précédentes de l’examen.</li>\n  <li>Déposer les référentiels des APSA nouvellement proposées à l’examen.</li>\n</ul>\n        "}, {"title": "Etape 2 : Examen par la CAHPN", "html": "<p><strong><u>Commission du 15 Octobre 2026 : CAHPN d’étude des référentiels</u></strong></p>\n<ul>\n  <li>Etudie chaque dossier déposé par chaque établissement, pour les différents examens</li>\n  <li>Transmet son avis à chaque établissement, pour chacun des dossiers déposé (pour y accéder, suivre le lien envoyé sur la boite mail au référent Examen ou à la personne qui a déposé le ou les dossiers sur « Démarche Numérique »).</li>\n  <li>Procède, pour chaque établissement et examen, à l’inscription sur « CYCLADES » des APSA validées.</li>\n</ul>\n<p>Les APSA inscrites sur CYCLADES par la CAHPN correspondent :</p>\n<ul>\n  <li>aux APSA déjà antérieurement validées et faisant partie de l’offre certificative</li>\n  <li>aux APSA nouvellement déclarées dont le référentiel est « validé » ou « validé sous conditions » (avec un suivi des modifications attendues pour la prochaine session)</li>\n  <li>A certains référentiels d’APSA qui restent « validés sous conditions » mais qui ont fait l’objet d’un travail visible de la part de l’établissement</li>\n</ul>\n<p>Les référentiels d’APSA qui restent au statut « non validé », ou « validé sous conditions » sans modifications satisfaisantes, ne sont pas inscrites dans CYCLADES</p>\n<p><strong>A l’issue de la CAHPN du 15 octobre 2026 :</strong></p>\n<ul>\n  <li><span class=\"soft\">Si l’avis de la CAHPN précise que votre offre est validée (Avis 1 ou 2), vous n’avez plus de dossier à déposer sur Démarche Numérique et passez à la phase 2.</span></li>\n  <li><span class=\"soft\">Si l’avis de la CAHPN précise que l’offre n’est pas validée pour la session 2027 de l’examen (Avis 3), vous devrez redéposer un dossier pour la prochaine CAHPN et restez à la phase 1.</span></li>\n</ul>\n<p><strong><u>Commission du 26 Janvier 2027 : CAHPN de suivi pour les offres non conformes</u></strong></p>\n<p>Entre le début du mois de novembre 2026 et le 18 décembre 2026, les établissements dont l’offre d’évaluation reste non conforme ou n’a pas été déclarée pour la commission d’octobre devront déposer un nouveau dossier sur Démarche Numérique (même lien).</p>\n<p>Chaque dossier déposé sur Démarche Numérique est instruit en commission le 26 Janvier 2027 selon les modalités décrites pour la commission d’octobre. Les établissements recevront l’avis d’étude de leur dossier en suivant le lien qui sera envoyé sur la boite mail au référent Examen.</p>\n<p><strong>A l’issue de la CAHPN de suivi du 26 Janvier 2027</strong></p>\n<ul>\n  <li><span class=\"soft\">Si l’avis de la CAHPN précise que votre offre est validée (Avis 1 ou 2), vous n’avez plus de dossier à déposer sur Démarche Numérique et passez à la phase 2.</span></li>\n  <li><span class=\"soft\">Si l’avis de la CAHPN précise que l’offre n’est pas validée pour la session 2027 de l’examen (Avis 3), vous devrez redéposer un dossier pour la prochaine CAHPN et restez à la phase 1.</span></li>\n</ul>\n<p>⚠️ Aucun passage à la phase de création des protocoles et donc de notation ne pourra être envisagé sans une validation complète de l’offre certificative.</p>\n        "}]}, {"title": "Phase 2 : Création des protocoles d’APSA via Cyclades", "logo": "cyclades", "steps": [{"title": "Etape 1 : Création des protocoles (ou « ensembles certificatifs »)", "html": "<p><em>Les 2 premières étapes doivent être réalisées en Novembre 2026</em></p>\n<p>Après validation de l’offre d’évaluation de l’établissement, le référent examen utilise son accès Cyclades/Gestion des Epreuves EPS pour créer les protocoles d’évaluation. Il est fortement recommandé de veiller à ce que les groupes inscrits pendant cette étape utilisent exactement la nomenclature de votre logiciel de scolarité (« Pronote », « Ecole directe », …) pour que l’importation des élèves se fasse correctement.</p>\n<p>Seules les APSA dont le référentiel a été inscrit sur Cyclades par la CAHPN peuvent être utilisées dans le cadre de la création de ces protocoles.</p>\n<p>Les référentiels adaptés et les référentiels des APSA de la liste Académique doivent avoir été validés par la CAHPN pour pouvoir être utilisés par le référent Examen.</p>\n        "}, {"title": "Etape 2 : Transmission des protocoles", "html": "\n<p>Une fois tous les protocoles créés, le chef d’établissement doit procéder à la transmission des protocoles via son accès spécifique.</p>\n        "}, {"title": "Etape 3 : Validation des protocoles", "html": "\n<p>Suite à la transmission des protocoles d’évaluation par le chef d’établissement, la Division des Examens examinera la conformité des demandes et procédera à leur validation.</p>\n        "}, {"title": "Etape 4 : Association des élèves aux protocoles via Cyclades", "html": "\n<p>Une fois les protocoles validés par la Division des Examens, vous pourrez procéder via l’accès Cyclades/Gestion des Epreuves EPS à la répartition des élèves dans les différents protocoles. Cette étape étant souvent source d’erreurs, nous conseillons au référent Examens d’être accompagné d’un autre membre de l’équipe pour éviter les confusions qui se ressentiront sur la suite de la démarche effectuée sur Santorin.</p>\n        "}]}, {"title": "Phase 3 : Préparation de la phase de notation via Santorin", "logo": "santorin", "steps": [{"title": "Etape 1 : Création des missions via l’accès chef d’établissement", "html": "\n<p>Au cours de cette étape, le chef d’établissement doit créer :</p>\n<ul>\n  <li>Une convocation pour le référent examen afin de lui donner accès à la répartition des élèves</li>\n  <li>Une convocation pour chacun des enseignants concernés par la mission d’évaluation</li>\n</ul>\n        "}, {"title": "Etape 2 : Association des correcteurs aux groupes d’élèves (Lots).", "html": "\n<p>Cette étape est souvent confondue avec l’association des élèves aux protocoles via Cyclades. Elle est pourtant nécessaire et totalement distincte.</p>\n<p>Le référent examen, via son accès intitulé Coordonnateur sur Santorin, associe chaque groupe d’élève à l’enseignant ou aux enseignants qui vont saisir les notes sur Santorin.</p>\n<p><a href=\"https://stocad.ac-nantes.fr/index.php/s/GyA38smFJjoBA9D\" target=\"_blank\" rel=\"noopener\">Lien du PDF contenant les explications détaillées</a></p>\n        "}]}, {"title": "Phase 4 : Notation des élèves via Santorin", "logo": "santorin", "steps": [{"title": "Etape 1 : Saisir les notes", "html": "<p><em>La saisie des notes doit s’effectuer avant le Vendredi 04 juin 2027</em></p>\n<p>A partir de mi-Janvier 2027, Chaque enseignant, à travers son accès Imag’in/Portail d’accès aux missions/Santorin doit accéder à ses groupes d’élèves et inscrire ses notes, AFL par AFL. Les enseignants en voie Professionnelle doivent également choisir parmi les AFLP 3 à 6 les deux AFLP sélectionnés pour cette APSA.</p>\n<ul>\n  <li>La saisie des notes peut se faire dès l’ouverture de la mission de notation pour l’enseignant.</li>\n  <li>Ce qui est inscrit sur Santorin est sauvegardé automatiquement, pas besoin d’enregistrer son travail.</li>\n  <li>Les notes peuvent être modifiées jusqu’à la clôture du lot.</li>\n</ul>\n        "}, {"title": "Etape 2 : Clôturer les notes de chaque groupe (Lots)", "html": "\n<p>Deux organisations co-existent :</p>\n<ul>\n  <li>Chaque correcteur effectue la clôture de son lot en le verrouillant en fin de page de notation.</li>\n  <li>Le référent examen effectue la clôture de l’ensemble des lots en les verrouillant depuis son accès.</li>\n</ul>\n<p>En cas d’erreur dans la saisie des notes après verrouillage, seule la Division des examens et concours sera en mesure d’ouvrir le lot concerné. La clôture des notes doit obligatoirement être réalisée avant le 5 Juin.</p>\n        "}]}, {"title": "Phase 5 : Harmonisation des Notes par la CAHPN le 17 Juin 2027", "logo": "santorin", "steps": [{"title": "Etape 1 : Harmonisation", "html": "<p>La CAHPN se réunit le 17 juin 2027 pour étudier les propositions de notes des établissements en fonction de deux axes majeurs :</p>\n<ul>\n  <li>L’écart entre les notes des garçons et les notes des filles pour chaque établissement</li>\n  <li>L’écart entre les notes de l’établissement et la moyenne académique</li>\n</ul>\n<p>Entre le 1er et le 8 Juin 2027, les établissements ayant un contexte d’enseignement particulier ou ayant vécu une situation particulière pouvant expliquer des résultats qui sortent de l’ordinaire, sont invités à faire remonter les informations via Démarche Numérique en créant un dossier en suivant le lien ci-dessous.</p>\n<p><a href=\"https://www.demarches-simplifiees.fr/commencer/cahpn-formulaire-declaration-situation-particuliere\" target=\"_blank\" rel=\"noopener\">https://www.demarches-simplifiees.fr/commencer/cahpn-formulaire-declaration-situation-particuliere</a></p>\n<p>Ce lien sera actif entre le 1er et le 8 Juin 2027.</p>\n<p>La commission étudiera les déclarations et l’argumentaire développé, pour une éventuelle prise en compte pour l’harmonisation.</p>\n        "}, {"title": "Etape 2 : Analyse statistiques", "html": "\n<p>A l’issue de cette CAHPN, la division des examens procédera à l’envoi d’un email à chaque établissement pour lui faire part des décisions d’harmonisation le concernant et des conseils donnés par les membres de la commission pour réduire les éventuels écarts constatés.</p>\n<p>A l’issue de cette phase, les référents examens sont invités à aller consulter leurs statistiques d’examen via leur accès Imag’in/Portail d’accès aux missions/Santorin</p>\n<ul>\n  <li>Lien vers : <a href=\"https://nuage05.apps.education.fr/index.php/s/yqSid5yHgBFZqCG\" target=\"_blank\" rel=\"noopener\">Explications Statistiques Santorin</a></li>\n  <li>Lien vers : <a href=\"https://nuage05.apps.education.fr/index.php/s/REiQYLecoRYD7JW\" target=\"_blank\" rel=\"noopener\">Comparer ses statistiques d’établissement aux statistiques Académiques</a></li>\n  <li>Recevoir en demandant par email à <a href=\"mailto:examens.eps@ac-nantes.fr\">examens.eps@ac-nantes.fr</a></li>\n</ul>\n        "}]}];
+const DEFAULT_CONFIG = {
+  "contactEmail": "quentin.delisle@gmail.com",
+  "banque": {
+    "cap": "https://digipad.app/p/1827557/23d022625f2cb8",
+    "bacpro": "https://digipad.app/p/1816039/4accdaded035b",
+    "bacgt": "https://digipad.app/p/1788088/405c1b28597c88"
+  },
+  "web3formsAccessKey": "e07d6401-29b5-46f2-af4d-9b55878f4663"
+};
+
+const DEFAULT_INAPTITUDES = [{"date": "Document de travail — CNE 2025", "title": "Guide d'accompagnement : les inaptes partiels temporaires en EPS", "html": "\n<div class=\"ref-block\">\n<p><strong>Références :</strong></p>\n<p>• Arrêté du 21 décembre 2011, article 11 : « Les candidats présentant une inaptitude partielle ou un handicap ne permettant pas une pratique des APSA telles que présentées dans le cadre habituel du contrôle en cours de formation bénéficient d'un contrôle adapté. »</p>\n<p>• Textes certificatifs EPS : Bac GT — Circulaire n°2019-129 du 26-9-2019 et circulaire du 17-11-2023 ; Bac Pro — Circulaire du 20-9-2024 ; CAP — Circulaire du 17-7-2020.</p>\n<p>• Code de l'éducation : articles R.312-2 et R.312-3.</p>\n<p>• Rapport du Conseil des sages de la laïcité (mars 2022) : « L'évitement des cours d'éducation physique et sportive et le recours à des certificats médicaux non justifiés ».</p>\n</div>\n\n<h4>1. Les inaptes partiels temporaires : le constat et l'orientation prise</h4>\n<p>On distingue traditionnellement les <strong>inaptes partiels permanents</strong> (déclarés en début d'année, avec justification médicale), qui peuvent bénéficier d'un contrôle adapté avec une ou des évaluations adaptées, et les <strong>inaptes temporaires</strong>, déclarés en cours d'année pour une période limitée. Ces derniers représentent une grande partie des inaptitudes en EPS et étaient jusqu'ici systématiquement renvoyés vers une épreuve différée, souvent complexe à organiser.</p>\n<p><strong>Orientation prise :</strong> un élève inapte temporaire peut désormais faire l'objet, à certaines conditions, d'une pratique adaptée et donc d'une épreuve adaptée, sans attendre l'épreuve différée.</p>\n<p><strong>Enjeux :</strong> faire vivre une EPS de qualité pour le plus grand nombre d'élèves en favorisant l'adaptation plutôt que l'éviction de pratique ou le renvoi à l'épreuve différée (souvent délicate à organiser côté enseignants comme élèves), et réduire le nombre d'élèves notés sur seulement un ou deux CCF.</p>\n\n<dl>\n<dt>Contrôle adapté</dt>\n<dd>Adaptation/modification d'une ou plusieurs épreuves (« épreuves adaptées »), remontées à la CAHPN. Peut aussi impliquer un aménagement des conditions de certification (3, 2 ou une seule épreuve).</dd>\n<dt>Contrôle aménagé</dt>\n<dd>Aménagement des conditions de certification, sans adaptation/modification de la ou des épreuves elles-mêmes.</dd>\n<dt>Évaluation différée</dt>\n<dd>Évaluation réalisée à un moment différé dans l'année, sous conditions justifiées (ex. inaptitude totale médicalement certifiée le jour du CCF).</dd>\n<dt>Candidat en situation de handicap</dt>\n<dd>Candidat dont les possibilités/ressources ont conduit à une notification MDPH et une reconnaissance de handicap ; peut bénéficier d'un contrôle adapté.</dd>\n<dt>Inapte partiel permanent</dt>\n<dd>Élève partiellement inapte de manière permanente (ex. atrophie musculaire d'un bras).</dd>\n<dt>Inapte partiel temporaire</dt>\n<dd>Élève partiellement inapte et de manière temporaire (ex. fracture du poignet).</dd>\n<dt>Inapte total temporaire</dt>\n<dd>Élève dans l'incapacité complète de pratiquer, mais de manière temporaire (ex. suite à une intervention chirurgicale).</dd>\n</dl>\n\n<h4>2. Une démarche et des leviers d'adaptation</h4>\n<p>La démarche repose sur l'idée de <strong>conserver un degré d'exigence cohérent</strong> au regard des besoins et possibilités des élèves, en adéquation avec les attendus de fin de cursus lycée — sans pour autant proposer d'emblée une pratique qui ne mobiliserait pas l'ensemble des ressources de l'élève. Elle s'appuie sur le <strong>certificat médical d'inaptitude partielle</strong> et les préconisations médicales, point de départ de l'analyse des besoins.</p>\n<p>Il appartient à l'enseignant d'apprécier si une épreuve adaptée est plus judicieuse qu'un renvoi à une épreuve différée. Pour prévenir toute contestation, il est recommandé de présenter l'épreuve adaptée par écrit au candidat et de recueillir son accord.</p>\n<p><em>Synthèse des principes :</em> conserver l'articulation entre dimensions motrices et méthodologiques/sociales ; partir des besoins et possibilités réels de l'élève plutôt que de ses seules incapacités ; intégrer la conception des adaptations au fonctionnement ordinaire de la classe ; construire ces adaptations en équipe pédagogique et non dans l'urgence ; s'appuyer sur les échanges avec l'élève, la famille et l'infirmière scolaire.</p>\n\n<p>Les leviers ci-dessous sont à considérer <strong>dans l'ordre présenté</strong>, du plus léger au plus conséquent, et peuvent être combinés selon la situation.</p>\n\n<h4>Levier 1 — Modification d'éléments du dispositif, sans changer la nature ni les exigences de l'épreuve</h4>\n<table>\n<tr><th>CA</th><th>Exemples</th></tr>\n<tr><td>CA1</td><td>Demi-fond : temps de récupération plus important entre deux courses</td></tr>\n<tr><td>CA2</td><td>Course d'orientation : carte adaptée (ex. déficience visuelle)</td></tr>\n<tr><td>CA3</td><td>Acrosport : ajustement de postures porteur/voltigeur pour éviter le port de charges lourdes ; Danse : ajustement des transitions dynamiques (sauts) pour ménager les articulations</td></tr>\n<tr><td>CA4</td><td>Basket 3x3 : règle d'invulnérabilité pour éviter les chocs ; Badminton : taille du terrain ajustée selon les possibilités physiques</td></tr>\n<tr><td>CA5</td><td>Musculation : choix des zones musculaires travaillées selon l'inaptitude constatée</td></tr>\n</table>\n\n<h4>Levier 2 — Modification d'un paramètre de conception, sans changer le sens de l'épreuve</h4>\n<table>\n<tr><th>CA</th><th>Exemples</th></tr>\n<tr><td>CA1</td><td>Natation : autre modalité de nage (ex. dos plutôt que brasse) ; Athlétisme : lancer assis sur une chaise si difficulté de mobilisation des membres inférieurs</td></tr>\n<tr><td>CA2</td><td>Course d'orientation : nombre de postes réduit ; Sauvetage aquatique : suppression d'une modalité de nage, entrée dans l'eau modifiée</td></tr>\n<tr><td>CA3</td><td>Danse : paramètres espace/temps/énergie adaptés, possibilité de danser assis</td></tr>\n<tr><td>CA4</td><td>Basket 3x3 : taille du ballon, temps de tenue de balle ou des 3 secondes ajustés</td></tr>\n<tr><td>CA5</td><td>Musculation : nombre de zones de travail réduit (3→2 ou 2→1), compensé sur la zone valide</td></tr>\n</table>\n\n<h4>Levier 3 — Modification du barème ou de la pondération des points, projet restant ambitieux</h4>\n<table>\n<tr><th>CA</th><th>Exemples</th></tr>\n<tr><td>CA1</td><td>Natation : barème assoupli selon les possibilités physiques</td></tr>\n<tr><td>CA2</td><td>Course d'orientation : nombre de balises ajusté ; Sauvetage aquatique : pondération de certaines parties du parcours</td></tr>\n<tr><td>CA3</td><td>Acrosport : valeur des éléments chorégraphiques modifiée ; Danse : poids de certaines mobilisations corporelles majoré/minoré</td></tr>\n<tr><td>CA4</td><td>Basket 3x3 : valeur d'un rôle (porteur/non-porteur/défenseur) ajustée</td></tr>\n<tr><td>CA5</td><td>Musculation : davantage de points sur l'analyse/régulation si l'engagement physique est limité</td></tr>\n</table>\n\n<h4>Levier 4 — Modification d'un élément ou contenu à évaluer, sans supprimer les aspects moteurs/méthodologiques/sociaux</h4>\n<table>\n<tr><th>CA</th><th>Exemples</th></tr>\n<tr><td>CA1</td><td>Athlétisme : lancer sans élan en cas de difficulté de déplacement</td></tr>\n<tr><td>CA2</td><td>Sauvetage aquatique : remorquage remplacé par déplacement avec planche ; Course d'orientation : dimension « orientation » valorisée sur la dimension « course »</td></tr>\n<tr><td>CA3</td><td>Acrosport : qualité d'exécution privilégiée sur la difficulté des figures</td></tr>\n<tr><td>CA4</td><td>Badminton : aspects qualitatifs/stratégiques privilégiés sur le nombre de gains de matchs</td></tr>\n<tr><td>CA5</td><td>Musculation/STEP : certains paramètres d'effort non pris en compte selon les besoins</td></tr>\n</table>\n\n<h4>Levier 5 — Épreuve anticipée (avec ou sans adaptation)</h4>\n<p>Dans certaines situations, avancer la date d'un CCF en amont d'une opération chirurgicale, si la pratique ordinaire ou adaptée reste possible et que les compétences développées le permettent.</p>\n\n<h4>Levier 6 — Modification de l'ensemble certificatif proposé</h4>\n<p>Permuter exceptionnellement un élève d'un ensemble certificatif à un autre, pour lui permettre de vivre un enseignement et une certification adaptés couvrant les trois champs d'apprentissage. Exemple : proposition de la danse en substitution de l'acrosport (CA3) pour une problématique articulaire empêchant le port de charges ; natation en substitution du demi-fond pour une problématique articulaire spécifique.</p>\n\n<h4>Levier 7 — Substitution d'une APSA par une APSA alternative</h4>\n<table>\n<tr><th>CA</th><th>Exemples</th></tr>\n<tr><td>CA1</td><td>Athlétisme : parcours en fauteuil ou marche nordique en remplacement d'une course ; lancer de vortex en substitution du javelot</td></tr>\n<tr><td>CA2</td><td>Course d'orientation : pratique de type « labyrinthe » en périmètre réduit</td></tr>\n<tr><td>CA3</td><td>Gymnastique : chorégraphie esthétique en substitution d'un enchaînement acrobatique</td></tr>\n<tr><td>CA4</td><td>Basket 3x3 : situation de jeu en surnombre offensif ; parcours technique défis en présence d'adversaires/partenaires</td></tr>\n<tr><td>CA5</td><td>Musculation : pratique au poids de corps, sans appareil</td></tr>\n</table>\n\n<h4>3. Le certificat médical d'inaptitude partielle : points de repères</h4>\n<ul>\n<li>C'est la condition <strong>« sine qua non »</strong> pour définir les adaptations, qui doivent suivre les préconisations médicales (annexe de l'arrêté du 13 septembre 1989 ; réflexion nationale en cours pour son actualisation).</li>\n<li>Il s'inscrit dans le <strong>principe de l'aptitude a priori</strong> de tous les élèves (circulaire n°90-107 du 17 mai 1990), qui invite à substituer la notion d'inaptitude à celle de dispense.</li>\n<li>La <strong>dispense</strong> reste une décision administrative distincte, délivrée uniquement par le chef d'établissement ou une autorité hiérarchique — il est recommandé de préciser cette distinction dans le règlement intérieur.</li>\n<li>L'inaptitude doit être justifiée par un <strong>certificat médical</strong> précisant son caractère total ou partiel, et permanent ou temporaire (Décret n°2006-583 du 23 mai 2006).</li>\n<li>Seuls les <strong>médecins</strong> (traitant ou scolaire) sont habilités à l'établir, à la demande du patient. Il est valable uniquement pour l'année scolaire en cours.</li>\n<li>C'est un <strong>outil de liaison</strong> entre l'enseignant, l'élève, sa famille et le corps médical. L'infirmière scolaire est une personne ressource dont l'avis sur une adaptation peut être sollicité.</li>\n<li>Il doit être perçu comme <strong>un outil qui autorise et non qui restreint</strong>, un levier d'inclusion.</li>\n</ul>\n\n<p class=\"soft\">Source : Commission Nationale des Examens EPS — « Les inaptes partiels temporaires en EPS, guide d'accompagnement » (document de travail, 2025).</p>\n"}];
+
+
+const LOGOS = { ds: 'assets/logo-demarche-numerique.png', cyclades: 'assets/logo-cyclades.png', santorin: 'assets/logo-santorin.png' };
+const LOGO_LABELS = { ds: 'Démarche Numérique', cyclades: 'Cyclades', santorin: 'Santorin' };
+
+function loadJson(key, fallback) {
+  try {
+    const raw = localStorage.getItem(key);
+    if (raw) return { value: JSON.parse(raw), fromStorage: true };
+  } catch (e) { console.warn('Lecture localStorage impossible pour', key, e); }
+  return { value: JSON.parse(JSON.stringify(fallback)), fromStorage: false };
+}
+function saveJson(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
+
+let { value: DATA, fromStorage: DATA_FROM_STORAGE } = loadJson(STORAGE_KEY, DEFAULT_DATA);
+let { value: CONFIG } = loadJson(CONFIG_KEY, DEFAULT_CONFIG);
+let { value: INAPT } = loadJson(INAPT_KEY, DEFAULT_INAPTITUDES);
+
+const phasesEl = document.getElementById('phases');
+const contentEl = document.getElementById('content');
+let current = -1;
+
+function renderSidebar() {
+  phasesEl.innerHTML = '';
+  DATA.forEach((ph, i) => {
+    const phase = document.createElement('div');
+    phase.className = 'phase clickable';
+    phase.dataset.i = i;
+
+    const head = document.createElement('div');
+    head.className = 'phase-header';
+
+    const title = document.createElement('div');
+    title.className = 'phase-title';
+    title.textContent = ph.title;
+    head.appendChild(title);
+
+    const metaRow = document.createElement('div');
+    metaRow.className = 'phase-meta-row';
+
+    const logoChip = document.createElement('span');
+    logoChip.className = 'logo-chip';
+    const logo = document.createElement('img');
+    logo.className = 'logo-img';
+    logo.src = LOGOS[ph.logo] || '';
+    logo.alt = ph.logo || '';
+    logoChip.appendChild(logo);
+    metaRow.appendChild(logoChip);
+
+    const steps = ph.steps || [];
+    const stepCount = steps.length;
+    const badge = document.createElement('button');
+    badge.type = 'button';
+    badge.className = 'step-count-badge';
+    badge.innerHTML = `<span class="dot"></span>${stepCount} étape${stepCount > 1 ? 's' : ''}<span class="chev">▾</span>`;
+    badge.addEventListener('click', (e) => {
+      e.stopPropagation();
+      spawnRipple(badge, e);
+      const wasExpanded = phase.classList.contains('expanded');
+      document.querySelectorAll('.phase.expanded').forEach((p) => p.classList.remove('expanded'));
+      if (!wasExpanded) phase.classList.add('expanded');
+    });
+    metaRow.appendChild(badge);
+
+    head.appendChild(metaRow);
+    head.addEventListener('click', () => showPhase(i));
+    phase.appendChild(head);
+
+    const stepsList = document.createElement('div');
+    stepsList.className = 'phase-steps-list';
+    steps.forEach((st, si) => {
+      const stepBtn = document.createElement('button');
+      stepBtn.type = 'button';
+      stepBtn.className = 'phase-step-item';
+      stepBtn.textContent = st.title;
+      stepBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        spawnRipple(stepBtn, e);
+        showPhaseStep(i, si);
+      });
+      stepsList.appendChild(stepBtn);
+    });
+    phase.appendChild(stepsList);
+
+    phasesEl.appendChild(phase);
+  });
+}
+
+document.getElementById('btnIntro').addEventListener('click', (event) => {
+  document.querySelectorAll('.button-primary').forEach(b => b.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  document.querySelectorAll('.phase').forEach(p => p.classList.remove('current-phase'));
+  current = -1;
+  contentEl.dataset.phase = '';
+  contentEl.innerHTML = `<div class="card image-box"><img src="assets/intro-apps.png" alt=""></div>`;
+});
+
+function showPhase(i) {
+  document.getElementById('btnIntro').classList.remove('active');
+  document.querySelectorAll('.phase').forEach(p => p.classList.remove('current-phase'));
+  const phaseEl = phasesEl.children[i];
+  if (!phaseEl) return;
+  phaseEl.classList.add('current-phase');
+  current = i;
+  contentEl.dataset.phase = i;
+  const ph = DATA[i];
+  let html = `<div class="card themed">
+      <h2>${ph.title} <span class="logo-chip logo-chip--inline"><img class="small-logo" src="${LOGOS[ph.logo] || ''}" alt=""></span></h2>
+      <hr class="sep">`;
+  if (ph.intro_html) html += ph.intro_html;
+  (ph.steps || []).forEach((st, si) => {
+    html += `<h3 id="step-${i}-${si}"><span class="step-title-text">${st.title}</span></h3>${st.html}`;
+  });
+  html += `</div>`;
+  contentEl.innerHTML = html;
+}
+
+function showPhaseStep(i, si) {
+  showPhase(i);
+  const el = document.getElementById(`step-${i}-${si}`);
+  if (!el) return;
+  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  el.classList.add('step-flash');
+  setTimeout(() => el.classList.remove('step-flash'), 1500);
+}
+
+renderSidebar();
+showPhase(0);
+
+/* =========================================================
+   CLICK / TAP VISUAL EFFECT — applies to every button-like element
+   ========================================================= */
+function spawnRipple(el, evt) {
+  const rect = el.getBoundingClientRect();
+  const size = Math.max(rect.width, rect.height) * 1.5;
+  const cx = (evt.clientX !== undefined ? evt.clientX : rect.left + rect.width / 2) - rect.left - size / 2;
+  const cy = (evt.clientY !== undefined ? evt.clientY : rect.top + rect.height / 2) - rect.top - size / 2;
+  const ripple = document.createElement('span');
+  ripple.className = 'ripple-fx';
+  ripple.style.width = ripple.style.height = size + 'px';
+  ripple.style.left = cx + 'px';
+  ripple.style.top = cy + 'px';
+  el.appendChild(ripple);
+  ripple.addEventListener('animationend', () => ripple.remove());
+}
+document.addEventListener('click', (e) => {
+  const el = e.target.closest('button, .phase, .banque-link, .admin-phase-head');
+  if (!el || el.disabled) return;
+  spawnRipple(el, e);
+});
+
+/* =========================================================
+   MODALS : ouverture / fermeture génériques
+   ========================================================= */
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+document.querySelectorAll('.modal-overlay').forEach((ov) => {
+  ov.addEventListener('mousedown', (e) => { if (e.target === ov) closeModal(ov.id); });
+});
+
+/* ---- Banque de référentiels ---- */
+document.getElementById('btnOpenBanque').addEventListener('click', () => {
+  const map = [
+    ['linkCap', 'subCap', CONFIG.banque && CONFIG.banque.cap],
+    ['linkBacPro', 'subBacPro', CONFIG.banque && CONFIG.banque.bacpro],
+    ['linkBacGt', 'subBacGt', CONFIG.banque && CONFIG.banque.bacgt],
+  ];
+  map.forEach(([linkId, subId, url]) => {
+    const a = document.getElementById(linkId);
+    const sub = document.getElementById(subId);
+    if (url) {
+      a.href = url;
+      a.classList.remove('disabled');
+      a.removeAttribute('title');
+      sub.textContent = '';
+    } else {
+      a.href = '#';
+      a.classList.add('disabled');
+      a.title = 'Lien non configuré (à renseigner dans Administration)';
+      sub.textContent = 'Lien non configuré';
+    }
+  });
+  openModal('banqueOverlay');
+});
+document.getElementById('btnCloseBanque').addEventListener('click', () => closeModal('banqueOverlay'));
+
+/* ---- Nouveautés — Inaptitudes ---- */
+function renderInaptitudes() {
+  const body = document.getElementById('inaptitudesBody');
+  if (!INAPT || !INAPT.length) {
+    body.innerHTML = `<div class="inapt-empty">Aucune nouveauté publiée pour le moment.</div>`;
+    return;
+  }
+  body.innerHTML = INAPT.map((item) => `
+    <div class="inapt-item">
+      <div class="inapt-item-head">
+        ${item.date ? `<span class="inapt-date">${esc(item.date)}</span>` : ''}
+        <h3 class="inapt-title">${esc(item.title)}</h3>
+      </div>
+      <div class="inapt-content">${item.html || ''}</div>
+    </div>
+  `).join('');
+}
+document.getElementById('btnOpenInaptitudes').addEventListener('click', () => {
+  renderInaptitudes();
+  openModal('inaptitudesOverlay');
+});
+document.getElementById('btnCloseInaptitudes').addEventListener('click', () => closeModal('inaptitudesOverlay'));
+
+/* ---- Demande d'informations ---- */
+function hasWeb3FormsConfig() {
+  return !!(CONFIG.web3formsAccessKey && CONFIG.web3formsAccessKey.trim());
+}
+
+document.getElementById('btnOpenContact').addEventListener('click', () => {
+  document.getElementById('contactError').textContent = '';
+  document.getElementById('contactPreviewWrap').style.display = 'none';
+  document.getElementById('contactSuccessBanner').style.display = 'none';
+  document.getElementById('contactFormFields').style.display = 'block';
+  document.getElementById('chkEtat').checked = false;
+  document.getElementById('chkStats').checked = false;
+  document.getElementById('inpEtablissement').value = '';
+  document.getElementById('inpEmailPro').value = '';
+  document.getElementById('contactIntroHint').textContent = hasWeb3FormsConfig()
+    ? "Ce formulaire envoie votre demande directement à la CAHPN — aucune messagerie ne s'ouvre sur votre appareil."
+    : "Ce bouton ouvre votre messagerie avec un message pré-rempli à destination de la CAHPN. Il vous suffira de cliquer sur Envoyer dans votre messagerie pour finaliser votre demande.";
+  const sendBtn = document.getElementById('btnSendContact');
+  sendBtn.textContent = "✉️ Envoyer la demande";
+  sendBtn.disabled = false;
+  sendBtn.dataset.sent = '';
+  openModal('contactOverlay');
+});
+document.getElementById('btnCloseContact').addEventListener('click', () => closeModal('contactOverlay'));
+
+document.getElementById('btnSendContact').addEventListener('click', () => {
+  const sendBtn = document.getElementById('btnSendContact');
+  const errEl = document.getElementById('contactError');
+
+  // After a successful send, this button just closes the modal.
+  if (sendBtn.dataset.sent === 'true') {
+    closeModal('contactOverlay');
+    return;
+  }
+
+  const wantEtat = document.getElementById('chkEtat').checked;
+  const wantStats = document.getElementById('chkStats').checked;
+  const etab = document.getElementById('inpEtablissement').value.trim();
+  const mailPro = document.getElementById('inpEmailPro').value.trim();
+  errEl.textContent = '';
+
+  if (!wantEtat && !wantStats) { errEl.textContent = 'Sélectionnez au moins une demande.'; return; }
+  if (!etab) { errEl.textContent = "Merci d'indiquer le nom de votre établissement."; return; }
+  if (!mailPro || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mailPro)) { errEl.textContent = "Merci d'indiquer une adresse email professionnelle valide."; return; }
+
+  const demandes = [];
+  if (wantEtat) demandes.push("- L'état des lieux de mes référentiels");
+  if (wantStats) demandes.push('- Les statistiques de mon établissement');
+
+  const to = (CONFIG.contactEmail || '').trim();
+  const dateStr = new Date().toLocaleString('fr-FR');
+  const subject = `Demande d'informations CAHPN — ${etab}`;
+  const body = `Établissement : ${etab}\nEmail professionnel : ${mailPro}\n\nDemande(s) :\n${demandes.join('\n')}\n\nDate de la demande : ${dateStr}\n`;
+
+  document.getElementById('contactPreview').value = `À : ${to || '(email de contact non configuré — voir Administration)'}\nObjet : ${subject}\n\n${body}`;
+
+  function showSuccess() {
+    document.getElementById('successControllerName').textContent = to || 'la CAHPN';
+    document.getElementById('contactFormFields').style.display = 'none';
+    document.getElementById('contactSuccessBanner').style.display = 'block';
+    sendBtn.textContent = 'Fermer';
+    sendBtn.disabled = false;
+    sendBtn.dataset.sent = 'true';
+  }
+
+  function fallbackToMailto(reason) {
+    document.getElementById('contactPreviewWrap').style.display = 'block';
+    errEl.textContent = reason;
+    sendBtn.disabled = false;
+    sendBtn.textContent = "✉️ Envoyer la demande";
+    if (to) {
+      const mailto = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      window.location.href = mailto;
+    }
+  }
+
+  if (hasWeb3FormsConfig()) {
+    sendBtn.disabled = true;
+    sendBtn.textContent = 'Envoi en cours…';
+    const payload = {
+      access_key: CONFIG.web3formsAccessKey,
+      subject: subject,
+      from_name: etab,
+      etablissement: etab,
+      email_pro: mailPro,
+      demandes: demandes.join('\n'),
+      date: dateStr,
+      replyto: mailPro,
+    };
+    fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload),
+    })
+      .then(async (res) => {
+        const json = await res.json().catch(() => ({}));
+        if (res.ok && json.success) {
+          showSuccess();
+        } else {
+          fallbackToMailto("L'envoi automatique a échoué. Votre messagerie va s'ouvrir à la place — si elle ne s'ouvre pas, copiez le message ci-dessous.");
+        }
+      })
+      .catch(() => {
+        fallbackToMailto("L'envoi automatique a échoué (pas de connexion ?). Votre messagerie va s'ouvrir à la place — si elle ne s'ouvre pas, copiez le message ci-dessous.");
+      });
+  } else if (to) {
+    fallbackToMailto('');
+    errEl.textContent = '';
+  } else {
+    document.getElementById('contactPreviewWrap').style.display = 'block';
+    errEl.textContent = "Aucun email de contact n'est configuré (voir Administration). Copiez le message ci-dessous.";
+  }
+});
+
+document.getElementById('btnCopyContact').addEventListener('click', () => {
+  const ta = document.getElementById('contactPreview');
+  ta.select();
+  ta.setSelectionRange(0, 999999);
+  try {
+    navigator.clipboard.writeText(ta.value);
+  } catch (e) {
+    document.execCommand('copy');
+  }
+});
+
+/* =========================================================
+   ADMIN PANEL LOGIC
+   ========================================================= */
+let ADMIN_DRAFT = null;
+let CONFIG_DRAFT = null;
+let INAPT_DRAFT = null;
+
+const adminOverlay = document.getElementById('adminOverlay');
+const adminPhasesEl = document.getElementById('adminPhases');
+const adminStatus = document.getElementById('adminStatus');
+const LOGO_OPTIONS = Object.keys(LOGOS);
+
+function esc(str) {
+  return (str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function fillConfigInputs() {
+  document.getElementById('cfgContactEmail').value = CONFIG_DRAFT.contactEmail || '';
+  document.getElementById('cfgBanqueCap').value = (CONFIG_DRAFT.banque && CONFIG_DRAFT.banque.cap) || '';
+  document.getElementById('cfgBanqueBacPro').value = (CONFIG_DRAFT.banque && CONFIG_DRAFT.banque.bacpro) || '';
+  document.getElementById('cfgBanqueBacGt').value = (CONFIG_DRAFT.banque && CONFIG_DRAFT.banque.bacgt) || '';
+  document.getElementById('cfgWeb3formsKey').value = CONFIG_DRAFT.web3formsAccessKey || '';
+}
+
+function openAdmin() {
+  ADMIN_DRAFT = JSON.parse(JSON.stringify(DATA));
+  CONFIG_DRAFT = JSON.parse(JSON.stringify(CONFIG));
+  INAPT_DRAFT = JSON.parse(JSON.stringify(INAPT || []));
+  fillConfigInputs();
+  document.getElementById('metaAppVersion').textContent = APP_VERSION;
+  document.getElementById('metaSource').textContent = DATA_FROM_STORAGE
+    ? 'modifié (enregistré sur cet appareil)'
+    : "contenu d'origine (aucune modification enregistrée)";
+  renderAdmin();
+  renderAdminInaptitudes();
+  adminOverlay.classList.add('open');
+}
+
+function closeAdmin() {
+  adminOverlay.classList.remove('open');
+  ADMIN_DRAFT = null;
+  CONFIG_DRAFT = null;
+  INAPT_DRAFT = null;
+}
+
+document.getElementById('cfgContactEmail').addEventListener('input', (e) => { if (CONFIG_DRAFT) CONFIG_DRAFT.contactEmail = e.target.value; });
+document.getElementById('cfgBanqueCap').addEventListener('input', (e) => { if (CONFIG_DRAFT) { CONFIG_DRAFT.banque = CONFIG_DRAFT.banque || {}; CONFIG_DRAFT.banque.cap = e.target.value; } });
+document.getElementById('cfgBanqueBacPro').addEventListener('input', (e) => { if (CONFIG_DRAFT) { CONFIG_DRAFT.banque = CONFIG_DRAFT.banque || {}; CONFIG_DRAFT.banque.bacpro = e.target.value; } });
+document.getElementById('cfgBanqueBacGt').addEventListener('input', (e) => { if (CONFIG_DRAFT) { CONFIG_DRAFT.banque = CONFIG_DRAFT.banque || {}; CONFIG_DRAFT.banque.bacgt = e.target.value; } });
+document.getElementById('cfgWeb3formsKey').addEventListener('input', (e) => { if (CONFIG_DRAFT) CONFIG_DRAFT.web3formsAccessKey = e.target.value; });
+
+function renderAdmin() {
+  adminPhasesEl.innerHTML = '';
+  ADMIN_DRAFT.forEach((ph, pi) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'admin-phase';
+    wrap.dataset.pi = pi;
+
+    const head = document.createElement('div');
+    head.className = 'admin-phase-head';
+    head.innerHTML = `
+      <div class="idx">${pi + 1}</div>
+      <div class="head-title">${esc(ph.title) || '(Phase sans titre)'}</div>
+      <span class="chev">▾</span>
+    `;
+    head.addEventListener('click', () => wrap.classList.toggle('collapsed'));
+    wrap.appendChild(head);
+
+    const body = document.createElement('div');
+    body.className = 'admin-phase-body';
+
+    body.innerHTML = `
+      <div class="admin-field">
+        <label>Titre de la phase</label>
+        <input type="text" class="ph-title" value="${esc(ph.title)}">
+      </div>
+      <div class="admin-row">
+        <div class="admin-field">
+          <label>Logo associé</label>
+          <select class="ph-logo">
+            ${LOGO_OPTIONS.map(k => `<option value="${esc(k)}" ${k === ph.logo ? 'selected' : ''}>${esc(LOGO_LABELS[k] || k)}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+      <div class="admin-field">
+        <label>Texte d'introduction (HTML, optionnel)</label>
+        <textarea class="ph-intro">${esc(ph.intro_html || '')}</textarea>
+      </div>
+      <div class="admin-field">
+        <label>Étapes de cette phase</label>
+        <div class="admin-steps"></div>
+        <button type="button" class="admin-add-step">➕ Ajouter une étape</button>
+      </div>
+      <div class="admin-phase-actions">
+        <button type="button" class="btn-move-up">⬆️ Monter</button>
+        <button type="button" class="btn-move-down">⬇️ Descendre</button>
+        <button type="button" class="btn-duplicate-phase">⧉ Dupliquer</button>
+        <button type="button" class="danger btn-delete-phase">🗑️ Supprimer la phase</button>
+      </div>
+    `;
+
+    const stepsContainer = body.querySelector('.admin-steps');
+    (ph.steps || []).forEach((st, si) => {
+      stepsContainer.appendChild(buildStepEl(pi, si, st));
+    });
+
+    body.querySelector('.ph-title').addEventListener('input', (e) => {
+      ADMIN_DRAFT[pi].title = e.target.value;
+      head.querySelector('.head-title').textContent = e.target.value || '(Phase sans titre)';
+    });
+    body.querySelector('.ph-logo').addEventListener('change', (e) => {
+      ADMIN_DRAFT[pi].logo = e.target.value;
+    });
+    body.querySelector('.ph-intro').addEventListener('input', (e) => {
+      ADMIN_DRAFT[pi].intro_html = e.target.value;
+    });
+    body.querySelector('.admin-add-step').addEventListener('click', () => {
+      if (!ADMIN_DRAFT[pi].steps) ADMIN_DRAFT[pi].steps = [];
+      ADMIN_DRAFT[pi].steps.push({ title: 'Nouvelle étape', html: '\n<p>Texte de l\'étape...</p>\n        ' });
+      renderAdmin();
+    });
+    body.querySelector('.btn-move-up').addEventListener('click', () => {
+      if (pi === 0) return;
+      const tmp = ADMIN_DRAFT[pi - 1];
+      ADMIN_DRAFT[pi - 1] = ADMIN_DRAFT[pi];
+      ADMIN_DRAFT[pi] = tmp;
+      renderAdmin();
+    });
+    body.querySelector('.btn-move-down').addEventListener('click', () => {
+      if (pi === ADMIN_DRAFT.length - 1) return;
+      const tmp = ADMIN_DRAFT[pi + 1];
+      ADMIN_DRAFT[pi + 1] = ADMIN_DRAFT[pi];
+      ADMIN_DRAFT[pi] = tmp;
+      renderAdmin();
+    });
+    body.querySelector('.btn-duplicate-phase').addEventListener('click', () => {
+      const copy = JSON.parse(JSON.stringify(ADMIN_DRAFT[pi]));
+      copy.title = copy.title + ' (copie)';
+      ADMIN_DRAFT.splice(pi + 1, 0, copy);
+      renderAdmin();
+    });
+    body.querySelector('.btn-delete-phase').addEventListener('click', () => {
+      if (!confirm('Supprimer définitivement cette phase et toutes ses étapes ?')) return;
+      ADMIN_DRAFT.splice(pi, 1);
+      renderAdmin();
+    });
+
+    wrap.appendChild(body);
+    adminPhasesEl.appendChild(wrap);
+  });
+}
+
+function buildStepEl(pi, si, st) {
+  const el = document.createElement('div');
+  el.className = 'admin-step';
+  el.innerHTML = `
+    <div class="admin-step-head">
+      <span class="step-idx">Étape ${si + 1}</span>
+      <div class="admin-mini-btns">
+        <button type="button" class="st-up">⬆️</button>
+        <button type="button" class="st-down">⬇️</button>
+        <button type="button" class="danger st-del">🗑️</button>
+      </div>
+    </div>
+    <div class="admin-field">
+      <label>Titre de l'étape</label>
+      <input type="text" class="st-title" value="${esc(st.title)}">
+    </div>
+    <div class="admin-field">
+      <label>Contenu (HTML — texte, listes, liens...)</label>
+      <textarea class="st-html html-editor">${esc(st.html)}</textarea>
+    </div>
+  `;
+  el.querySelector('.st-title').addEventListener('input', (e) => {
+    ADMIN_DRAFT[pi].steps[si].title = e.target.value;
+  });
+  el.querySelector('.st-html').addEventListener('input', (e) => {
+    ADMIN_DRAFT[pi].steps[si].html = e.target.value;
+  });
+  el.querySelector('.st-del').addEventListener('click', () => {
+    if (!confirm('Supprimer cette étape ?')) return;
+    ADMIN_DRAFT[pi].steps.splice(si, 1);
+    renderAdmin();
+  });
+  el.querySelector('.st-up').addEventListener('click', () => {
+    if (si === 0) return;
+    const arr = ADMIN_DRAFT[pi].steps;
+    const tmp = arr[si - 1]; arr[si - 1] = arr[si]; arr[si] = tmp;
+    renderAdmin();
+  });
+  el.querySelector('.st-down').addEventListener('click', () => {
+    const arr = ADMIN_DRAFT[pi].steps;
+    if (si === arr.length - 1) return;
+    const tmp = arr[si + 1]; arr[si + 1] = arr[si]; arr[si] = tmp;
+    renderAdmin();
+  });
+  return el;
+}
+
+document.getElementById('btnAddPhase').addEventListener('click', () => {
+  ADMIN_DRAFT.push({
+    title: 'Nouvelle phase',
+    logo: LOGO_OPTIONS[0] || '',
+    intro_html: '',
+    steps: [{ title: 'Etape 1', html: '\n<p>Texte de l\'étape...</p>\n        ' }]
+  });
+  renderAdmin();
+});
+
+function renderAdminInaptitudes() {
+  const container = document.getElementById('adminInaptitudes');
+  container.innerHTML = '';
+  INAPT_DRAFT.forEach((item, idx) => {
+    const el = document.createElement('div');
+    el.className = 'admin-step';
+    el.innerHTML = `
+      <div class="admin-step-head">
+        <span class="step-idx">Nouveauté ${idx + 1}</span>
+        <div class="admin-mini-btns">
+          <button type="button" class="ia-up">⬆️</button>
+          <button type="button" class="ia-down">⬇️</button>
+          <button type="button" class="danger ia-del">🗑️</button>
+        </div>
+      </div>
+      <div class="admin-row">
+        <div class="admin-field">
+          <label>Date / période affichée</label>
+          <input type="text" class="ia-date" value="${esc(item.date || '')}" placeholder="Ex : Septembre 2026">
+        </div>
+        <div class="admin-field">
+          <label>Titre</label>
+          <input type="text" class="ia-title" value="${esc(item.title || '')}">
+        </div>
+      </div>
+      <div class="admin-field">
+        <label>Contenu (HTML — texte, listes, liens...)</label>
+        <textarea class="ia-html html-editor">${esc(item.html || '')}</textarea>
+      </div>
+    `;
+    el.querySelector('.ia-date').addEventListener('input', (e) => { INAPT_DRAFT[idx].date = e.target.value; });
+    el.querySelector('.ia-title').addEventListener('input', (e) => { INAPT_DRAFT[idx].title = e.target.value; });
+    el.querySelector('.ia-html').addEventListener('input', (e) => { INAPT_DRAFT[idx].html = e.target.value; });
+    el.querySelector('.ia-del').addEventListener('click', () => {
+      if (!confirm('Supprimer cette nouveauté ?')) return;
+      INAPT_DRAFT.splice(idx, 1);
+      renderAdminInaptitudes();
+    });
+    el.querySelector('.ia-up').addEventListener('click', () => {
+      if (idx === 0) return;
+      const tmp = INAPT_DRAFT[idx - 1]; INAPT_DRAFT[idx - 1] = INAPT_DRAFT[idx]; INAPT_DRAFT[idx] = tmp;
+      renderAdminInaptitudes();
+    });
+    el.querySelector('.ia-down').addEventListener('click', () => {
+      if (idx === INAPT_DRAFT.length - 1) return;
+      const tmp = INAPT_DRAFT[idx + 1]; INAPT_DRAFT[idx + 1] = INAPT_DRAFT[idx]; INAPT_DRAFT[idx] = tmp;
+      renderAdminInaptitudes();
+    });
+    container.appendChild(el);
+  });
+}
+document.getElementById('btnAddInapt').addEventListener('click', () => {
+  INAPT_DRAFT.push({ date: '', title: 'Nouvelle nouveauté', html: '\n<p>Texte...</p>\n        ' });
+  renderAdminInaptitudes();
+});
+
+function applyAndSave() {
+  DATA = JSON.parse(JSON.stringify(ADMIN_DRAFT));
+  CONFIG = JSON.parse(JSON.stringify(CONFIG_DRAFT));
+  INAPT = JSON.parse(JSON.stringify(INAPT_DRAFT));
+  DATA_FROM_STORAGE = true;
+  saveJson(STORAGE_KEY, DATA);
+  saveJson(CONFIG_KEY, CONFIG);
+  saveJson(INAPT_KEY, INAPT);
+  renderSidebar();
+  if (current >= 0 && current < DATA.length) {
+    showPhase(current);
+  } else {
+    document.getElementById('btnIntro').click();
+  }
+  adminStatus.classList.add('show');
+  setTimeout(() => adminStatus.classList.remove('show'), 2200);
+}
+
+const ADMIN_USER = 'Admin';
+const ADMIN_PASS = 'Quentin';
+const ADMIN_SESSION_KEY = 'ccf_eps_admin_authenticated';
+
+document.getElementById('btnOpenAdmin').addEventListener('click', () => {
+  if (sessionStorage.getItem(ADMIN_SESSION_KEY) === '1') {
+    openAdmin();
+    return;
+  }
+  document.getElementById('adminLoginError').textContent = '';
+  document.getElementById('inpAdminUser').value = '';
+  document.getElementById('inpAdminPass').value = '';
+  openModal('adminLoginOverlay');
+  document.getElementById('inpAdminUser').focus();
+});
+document.getElementById('btnCloseAdminLogin').addEventListener('click', () => closeModal('adminLoginOverlay'));
+
+function attemptAdminLogin() {
+  const user = document.getElementById('inpAdminUser').value.trim();
+  const pass = document.getElementById('inpAdminPass').value;
+  const errEl = document.getElementById('adminLoginError');
+  if (user === ADMIN_USER && pass === ADMIN_PASS) {
+    sessionStorage.setItem(ADMIN_SESSION_KEY, '1');
+    errEl.textContent = '';
+    closeModal('adminLoginOverlay');
+    openAdmin();
+  } else {
+    errEl.textContent = 'Identifiant ou mot de passe incorrect.';
+  }
+}
+document.getElementById('btnAdminLoginSubmit').addEventListener('click', attemptAdminLogin);
+document.getElementById('inpAdminPass').addEventListener('keydown', (e) => { if (e.key === 'Enter') attemptAdminLogin(); });
+document.getElementById('inpAdminUser').addEventListener('keydown', (e) => { if (e.key === 'Enter') attemptAdminLogin(); });
+document.getElementById('btnCloseAdmin').addEventListener('click', () => {
+  if (confirm('Fermer sans enregistrer les modifications en cours ?')) closeAdmin();
+});
+document.getElementById('btnAdminCancel').addEventListener('click', () => {
+  if (confirm('Annuler toutes les modifications non enregistrées ?')) closeAdmin();
+});
+document.getElementById('btnAdminSave').addEventListener('click', applyAndSave);
+document.getElementById('btnAdminSaveTop').addEventListener('click', applyAndSave);
+document.getElementById('btnResetDefault').addEventListener('click', () => {
+  if (!confirm("Réinitialiser tout le contenu et la configuration à la version d'origine ? Cette action remplace les modifications en cours dans ce panneau.")) return;
+  ADMIN_DRAFT = JSON.parse(JSON.stringify(DEFAULT_DATA));
+  CONFIG_DRAFT = JSON.parse(JSON.stringify(DEFAULT_CONFIG));
+  INAPT_DRAFT = JSON.parse(JSON.stringify(DEFAULT_INAPTITUDES));
+  fillConfigInputs();
+  renderAdmin();
+  renderAdminInaptitudes();
+});
+document.getElementById('btnExportJson').addEventListener('click', () => {
+  const payload = { phases: ADMIN_DRAFT, config: CONFIG_DRAFT, inaptitudes: INAPT_DRAFT };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'ccf_eps_contenu_' + new Date().toISOString().slice(0,10) + '.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+});
+document.getElementById('btnImportJsonTrigger').addEventListener('click', () => {
+  document.getElementById('btnImportJson').click();
+});
+document.getElementById('btnImportJson').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    try {
+      const parsed = JSON.parse(ev.target.result);
+      let phases, config, inaptitudes;
+      if (Array.isArray(parsed)) {
+        // ancien format : simple tableau de phases
+        phases = parsed;
+        config = CONFIG_DRAFT;
+        inaptitudes = INAPT_DRAFT;
+      } else if (parsed && Array.isArray(parsed.phases)) {
+        phases = parsed.phases;
+        config = parsed.config || CONFIG_DRAFT;
+        inaptitudes = Array.isArray(parsed.inaptitudes) ? parsed.inaptitudes : INAPT_DRAFT;
+      } else {
+        throw new Error('Format inattendu.');
+      }
+      ADMIN_DRAFT = phases;
+      CONFIG_DRAFT = config;
+      INAPT_DRAFT = inaptitudes;
+      fillConfigInputs();
+      renderAdmin();
+      renderAdminInaptitudes();
+      alert('Import réussi. Cliquez sur "Enregistrer et appliquer" pour valider.');
+    } catch (err) {
+      alert('Erreur : le fichier importé n\'est pas un JSON valide (' + err.message + ')');
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+});
+
+adminOverlay.addEventListener('mousedown', (e) => {
+  if (e.target === adminOverlay) {
+    if (confirm('Fermer sans enregistrer les modifications en cours ?')) closeAdmin();
+  }
+});
+
+/* =========================================================
+   PWA : installation + service worker + mises à jour
+   ========================================================= */
+let deferredInstallPrompt = null;
+const btnInstall = document.getElementById('btnInstall');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  btnInstall.classList.add('show');
+});
+
+btnInstall.addEventListener('click', async () => {
+  if (!deferredInstallPrompt) {
+    alert("Pour installer l'application :\n\n• Sur iPhone/iPad (Safari) : bouton Partager → \"Sur l'écran d'accueil\".\n• Sur Android/Chrome : menu ⋮ → \"Installer l'application\".\n• Sur ordinateur (Chrome/Edge) : icône d'installation dans la barre d'adresse.");
+    return;
+  }
+  deferredInstallPrompt.prompt();
+  await deferredInstallPrompt.userChoice;
+  deferredInstallPrompt = null;
+  btnInstall.classList.remove('show');
+});
+
+window.addEventListener('appinstalled', () => {
+  btnInstall.classList.remove('show');
+});
+
+const updateBanner = document.getElementById('updateBanner');
+let swRegistration = null;
+let refreshing = false;
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').then((reg) => {
+      swRegistration = reg;
+      reg.addEventListener('updatefound', () => {
+        const newWorker = reg.installing;
+        if (!newWorker) return;
+        newWorker.addEventListener('statechange', () => {
+          if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+            updateBanner.classList.add('show');
+          }
+        });
+      });
+    }).catch((err) => console.warn('Service worker non enregistré :', err));
+  });
+
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (refreshing) return;
+    refreshing = true;
+    window.location.reload();
+  });
+}
+
+document.getElementById('btnUpdateReload').addEventListener('click', () => {
+  if (swRegistration && swRegistration.waiting) {
+    swRegistration.waiting.postMessage('SKIP_WAITING');
+  } else {
+    window.location.reload();
+  }
+});
+
+document.getElementById('btnCheckUpdate').addEventListener('click', async () => {
+  if (!swRegistration) { alert('Service worker non actif (mode hors-ligne ou navigateur non compatible).'); return; }
+  await swRegistration.update();
+  alert('Vérification effectuée. Si une nouvelle version est trouvée, un bandeau "Actualiser" apparaîtra en bas de l\'écran.');
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "name": "CAHP Nantes — Pas à pas CCF EPS",
+  "short_name": "CAHP Nantes",
+  "description": "Guide pas à pas pour les référents Examens CCF EPS — CAHP Nantes (N'EPS)",
+  "id": "/ccf-eps-guide/",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone"],
+  "orientation": "any",
+  "background_color": "#eef0f3",
+  "theme_color": "#eef0f3",
+  "lang": "fr",
+  "dir": "ltr",
+  "categories": ["education", "productivity"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

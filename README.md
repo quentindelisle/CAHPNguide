@@ -95,6 +95,11 @@ en cache.
   "Démarches Simplifiées" dans le contenu ont été renommées en
   "Démarche Numérique".
 - Le titre affiché est **"Les Examens en EPS — Pas à pas CCF 2027"**.
+- **Sur smartphone** (largeur ≤ 760px), le bandeau passe en colonne (logo
+  réduit, boutons centrés avec des libellés raccourcis), et la barre
+  latérale des phases devient une **bande défilante horizontalement** en
+  haut de l'écran plutôt que de disparaître — chaque phase reste accessible
+  au clic/toucher, avec le même dépliage des étapes qu'en version bureau.
 
 ---
 

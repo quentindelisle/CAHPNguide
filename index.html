@@ -66,6 +66,7 @@ button, .phase, .banque-link, .admin-phase-head {
 .topbar-btn--banque { background:linear-gradient(135deg,#007FD8,#00B7BA); }
 .topbar-btn--contact { background:linear-gradient(135deg,#FC3661,#8939C1); }
 .topbar-btn--inapt { background:linear-gradient(135deg,#FE9901,#FC3661); }
+.lbl-short { display:none; }
 .wrapper { display:grid; grid-template-columns:320px 1fr; height:calc(100vh - var(--topbar-h)); }
 .sidebar { background:linear-gradient(180deg,var(--panel),var(--panel-2)); border-right:1px solid var(--border); padding:12px; overflow:auto; }
 .button-primary { width:100%; padding:14px 12px; min-height:84px; font-size:15px; line-height:1.25; font-weight:700; background:linear-gradient(180deg,#ffffff,#f2f4f8); border:1px solid var(--border); border-radius:12px; box-shadow:var(--shadow-soft); color:var(--text); text-align:left; display:flex; align-items:center; gap:10px; transition:all .15s ease; cursor:pointer; }
@@ -118,10 +119,34 @@ hr.sep { border:0; border-top:1px solid var(--border); margin:12px 0; }
 .warn-ico { height:16px; width:auto; vertical-align:middle; margin-right:6px; }
 .soft { color:var(--muted); font-style:italic; }
 @media (max-width: 760px) {
-  .wrapper { grid-template-columns:1fr; }
-  .sidebar { display:none; }
+  .topbar { display:flex; flex-direction:column; align-items:center; padding:10px 12px; gap:8px; }
+  .top-logo { height:44px; width:44px; border-radius:9px; }
+  .topbar h1 { font-size:15px; line-height:1.25; }
+  .topbar-actions { justify-content:center; gap:6px; }
+  .topbar-btn { font-size:12px; padding:8px 11px; }
+  .topbar-btn--feature { max-width:none; flex:1 1 auto; min-width:120px; }
+  .lbl-full { display:none; }
+  .lbl-short { display:inline; }
+
+  .wrapper { grid-template-columns:1fr; height:auto; }
+  .main { height:auto; min-height:60vh; }
+  .image-box { height:auto; }
+  .image-box img { max-height:75vh; }
+  .sidebar {
+    display:flex; flex-direction:row; align-items:flex-start; overflow-x:auto;
+    -webkit-overflow-scrolling:touch; gap:8px; padding:10px; height:auto;
+    border-right:none; border-bottom:1px solid var(--border);
+  }
+  .sidebar .section-title { display:none; }
+  .sidebar #btnIntro { flex:0 0 140px; min-height:auto; padding:10px; font-size:12px; }
+  .sidebar #btnIntro img { display:none; }
+  #phases { display:flex; flex-direction:row; gap:8px; }
+  .phase { flex:0 0 190px; margin-bottom:0; }
+  .phase-header { padding:10px 12px; gap:6px; }
+  .phase-title { font-size:12.5px; }
+  .phase-steps-list { max-height:180px; overflow-y:auto; }
+  .content { padding:14px 16px; }
   #adminPanel { width:100vw; }
-  .topbar h1 { font-size:15px; }
 }
 
 .content[data-phase="0"] .card.themed { border-color:#00B7BA; box-shadow:0 8px 22px #00B7BA26, var(--shadow-soft); }
@@ -309,12 +334,12 @@ hr.sep { border:0; border-top:1px solid var(--border); margin:12px 0; }
     <h1>Les Examens en EPS — Pas à pas CCF 2027</h1>
   </div>
   <div class="topbar-actions">
-    <button class="topbar-btn topbar-btn--install" id="btnInstall" title="Installer l'application sur cet appareil">⬇️ Installer</button>
-    <button class="topbar-btn topbar-btn--feature topbar-btn--banque" id="btnOpenBanque" title="Accéder aux référentiels par examen">📚 Consulter la Banque de référentiels</button>
-    <button class="topbar-btn topbar-btn--feature topbar-btn--contact" id="btnOpenContact" title="Demander des informations complémentaires">🏫 Demander l'état des lieux des référentiels et les statistiques pour mon établissement</button>
-    <button class="topbar-btn topbar-btn--feature topbar-btn--inapt" id="btnOpenInaptitudes" title="Consulter les dernières nouveautés concernant les inaptitudes">🩹 Nouveautés concernant les Inaptitudes</button>
-    <button class="topbar-btn" id="btnExportPdf" title="Exporter tout le contenu du guide en PDF">📄 Exporter en PDF</button>
-    <button class="topbar-btn" id="btnOpenAdmin" title="Modifier tous les textes et rubriques">⚙️ Administration</button>
+    <button class="topbar-btn topbar-btn--install" id="btnInstall" title="Installer l'application sur cet appareil">⬇️ <span class="lbl-full">Installer</span><span class="lbl-short">Installer</span></button>
+    <button class="topbar-btn topbar-btn--feature topbar-btn--banque" id="btnOpenBanque" title="Accéder aux référentiels par examen">📚 <span class="lbl-full">Consulter la Banque de référentiels</span><span class="lbl-short">Banque</span></button>
+    <button class="topbar-btn topbar-btn--feature topbar-btn--contact" id="btnOpenContact" title="Demander des informations complémentaires">🏫 <span class="lbl-full">Demander l'état des lieux des référentiels et les statistiques pour mon établissement</span><span class="lbl-short">Infos établissement</span></button>
+    <button class="topbar-btn topbar-btn--feature topbar-btn--inapt" id="btnOpenInaptitudes" title="Consulter les dernières nouveautés concernant les inaptitudes">🩹 <span class="lbl-full">Nouveautés concernant les Inaptitudes</span><span class="lbl-short">Inaptitudes</span></button>
+    <button class="topbar-btn" id="btnExportPdf" title="Exporter tout le contenu du guide en PDF">📄 <span class="lbl-full">Exporter en PDF</span><span class="lbl-short">PDF</span></button>
+    <button class="topbar-btn" id="btnOpenAdmin" title="Modifier tous les textes et rubriques">⚙️ <span class="lbl-full">Administration</span><span class="lbl-short">Admin</span></button>
   </div>
 </header>
 <div class="wrapper">

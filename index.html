@@ -296,8 +296,8 @@ hr.sep { border:0; border-top:1px solid var(--border); margin:12px 0; }
 <div class="wrapper">
   <aside class="sidebar">
     <button id="btnIntro" class="button-primary active">
-      Détail des applications utilisées pour évaluer en CCF
-      <img src="assets/intro-apps.png" alt="">
+      Les Applications utilisées
+      <img src="assets/intro-apps.jpg" alt="">
     </button>
     <div class="section-title">Étapes</div>
     <div id="phases"></div>
@@ -305,7 +305,7 @@ hr.sep { border:0; border-top:1px solid var(--border); margin:12px 0; }
   <main class="main">
     <div class="content" id="content">
       <div class="card image-box">
-        <img id="introImg" src="assets/intro-apps.png" alt="">
+        <img id="introImg" src="assets/intro-apps.jpg" alt="">
       </div>
     </div>
   </main>
@@ -617,7 +617,7 @@ document.getElementById('btnIntro').addEventListener('click', (event) => {
   document.querySelectorAll('.phase').forEach(p => p.classList.remove('current-phase'));
   current = -1;
   contentEl.dataset.phase = '';
-  contentEl.innerHTML = `<div class="card image-box"><img src="assets/intro-apps.png" alt=""></div>`;
+  contentEl.innerHTML = `<div class="card image-box"><img src="assets/intro-apps.jpg" alt=""></div>`;
 });
 
 function showPhase(i) {
@@ -650,7 +650,6 @@ function showPhaseStep(i, si) {
 }
 
 renderSidebar();
-showPhase(0);
 
 /* =========================================================
    CLICK / TAP VISUAL EFFECT — applies to every button-like element

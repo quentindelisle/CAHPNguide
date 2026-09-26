@@ -1,7 +1,7 @@
 // Service worker — Pas à pas CCF EPS
 // Incrémentez CACHE_VERSION à chaque publication pour forcer la mise à jour
 // du cache chez les utilisateurs (ex: "ccf-eps-2026-06-12").
-const CACHE_VERSION = 'ccf-eps-v17';
+const CACHE_VERSION = 'ccf-eps-v18';
 const CACHE_NAME = `ccf-eps-guide-${CACHE_VERSION}`;
 
 const APP_SHELL = [
@@ -9,7 +9,7 @@ const APP_SHELL = [
   './index.html',
   './manifest.webmanifest',
   './assets/logo-cahpnantes.jpg',
-  './assets/intro-apps.png',
+  './assets/intro-apps.jpg',
   './assets/logo-demarche-numerique.png',
   './assets/logo-cyclades.png',
   './assets/logo-santorin.png',

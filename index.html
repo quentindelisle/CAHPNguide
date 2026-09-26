@@ -285,7 +285,7 @@ hr.sep { border:0; border-top:1px solid var(--border); margin:12px 0; }
   #printExport h1 { font-size:20px; margin:0; }
   #printExport .print-meta { font-size:10.5px; color:#555; margin:0 0 18px; }
   #printExport .print-phase { page-break-before:always; margin-top:0; }
-  #printExport .print-phase:first-of-type { page-break-before:avoid; }
+  #printExport .print-phase.no-break { page-break-before:avoid; }
   #printExport h2 { font-size:16px; border-bottom:2px solid #333; padding-bottom:4px; margin:0 0 8px; }
   #printExport h2 img { display:none; }
   #printExport h3 { font-size:13px; margin:14px 0 4px; }
@@ -1189,8 +1189,8 @@ function buildPrintExport() {
       </div>
     </div>
   `;
-  DATA.forEach((ph) => {
-    html += `<div class="print-phase"><h2>${ph.title}</h2>`;
+  DATA.forEach((ph, i) => {
+    html += `<div class="print-phase${i === 0 ? ' no-break' : ''}"><h2>${ph.title}</h2>`;
     if (ph.intro_html) html += ph.intro_html;
     (ph.steps || []).forEach((st) => {
       html += `<h3>${st.title}</h3>${st.html}`;

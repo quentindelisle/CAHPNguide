@@ -276,7 +276,30 @@ hr.sep { border:0; border-top:1px solid var(--border); margin:12px 0; }
 .admin-save-btn { padding:11px 20px; border-radius:10px; border:1px solid var(--accent); background:var(--accent); color:#fff; font-weight:800; cursor:pointer; font-size:14px; }
 .admin-save-btn:hover { filter:brightness(1.08); }
 .admin-hint { font-size:12px; color:var(--muted); margin:0 0 14px; padding:10px 12px; border:1px solid var(--border); border-radius:8px; background:#f4f6f9; }
-.admin-meta { font-size:11.5px; color:var(--muted); margin:0 0 14px; display:flex; gap:14px; flex-wrap:wrap; }
+.admin-meta { font-size:11.5px; color:var(--muted); margin:0 0 14px; display:flex; gap:14px; flex-wrap:wrap; }.print-only { display:none; }
+@media print {
+  body > *:not(#printExport) { display:none !important; }
+  #printExport { display:block !important; font-family:Georgia,'Times New Roman',serif; color:#111; padding:0 10px; }
+  #printExport .print-header { display:flex; align-items:center; gap:14px; border-bottom:3px solid #222; padding-bottom:10px; margin-bottom:6px; }
+  #printExport .print-header img { height:56px; width:56px; object-fit:cover; border-radius:8px; }
+  #printExport h1 { font-size:20px; margin:0; }
+  #printExport .print-meta { font-size:10.5px; color:#555; margin:0 0 18px; }
+  #printExport .print-phase { page-break-before:always; margin-top:0; }
+  #printExport .print-phase:first-of-type { page-break-before:avoid; }
+  #printExport h2 { font-size:16px; border-bottom:2px solid #333; padding-bottom:4px; margin:0 0 8px; }
+  #printExport h2 img { display:none; }
+  #printExport h3 { font-size:13px; margin:14px 0 4px; }
+  #printExport p, #printExport li { font-size:11.5px; line-height:1.5; }
+  #printExport .logo-chip { display:none; }
+  #printExport .notice { border:1px solid #999; padding:8px 10px; background:#f2f2f2; margin:8px 0; font-weight:700; font-size:11.5px; }
+  #printExport table { width:100%; border-collapse:collapse; font-size:10.5px; margin:8px 0; }
+  #printExport th, #printExport td { border:1px solid #999; padding:4px 6px; text-align:left; }
+  #printExport th { background:#eee; }
+  #printExport a { color:#111; text-decoration:underline; }
+  #printExport .soft { color:#555; font-style:italic; font-size:10.5px; }
+  #printExport dt { font-weight:800; margin-top:6px; font-size:11.5px; }
+  #printExport dd { margin:1px 0 0; font-size:11px; }
+}
 </style>
 </head>
 <body>
@@ -290,6 +313,7 @@ hr.sep { border:0; border-top:1px solid var(--border); margin:12px 0; }
     <button class="topbar-btn topbar-btn--feature topbar-btn--banque" id="btnOpenBanque" title="Accéder aux référentiels par examen">📚 Consulter la Banque de référentiels</button>
     <button class="topbar-btn topbar-btn--feature topbar-btn--contact" id="btnOpenContact" title="Demander des informations complémentaires">🏫 Demander l'état des lieux des référentiels et les statistiques pour mon établissement</button>
     <button class="topbar-btn topbar-btn--feature topbar-btn--inapt" id="btnOpenInaptitudes" title="Consulter les dernières nouveautés concernant les inaptitudes">🩹 Nouveautés concernant les Inaptitudes</button>
+    <button class="topbar-btn" id="btnExportPdf" title="Exporter tout le contenu du guide en PDF">📄 Exporter en PDF</button>
     <button class="topbar-btn" id="btnOpenAdmin" title="Modifier tous les textes et rubriques">⚙️ Administration</button>
   </div>
 </header>
@@ -355,9 +379,12 @@ hr.sep { border:0; border-top:1px solid var(--border); margin:12px 0; }
         ✅ Votre demande a bien été envoyée, vous recevrez les documents demandés prochainement.
       </div>
       <div id="contactFormFields">
-        <p class="modal-hint" id="contactIntroHint">
-          Ce formulaire transmet votre demande à la CAHPN. Il vous suffit de cliquer sur Envoyer.
-        </p>
+        <div class="admin-field">
+          <label>Examen(s) concerné(s)</label>
+          <label class="checkbox-row"><input type="checkbox" id="chkBacGT"> Bac GT</label>
+          <label class="checkbox-row"><input type="checkbox" id="chkBacPro"> Bac Pro</label>
+          <label class="checkbox-row"><input type="checkbox" id="chkCAP"> CAP</label>
+        </div>
         <div class="admin-field">
           <label>Je souhaite recevoir</label>
           <label class="checkbox-row"><input type="checkbox" id="chkEtat"> L'état des lieux de mes référentiels</label>
@@ -742,13 +769,13 @@ document.getElementById('btnOpenContact').addEventListener('click', () => {
   document.getElementById('contactPreviewWrap').style.display = 'none';
   document.getElementById('contactSuccessBanner').style.display = 'none';
   document.getElementById('contactFormFields').style.display = 'block';
+  document.getElementById('chkBacGT').checked = false;
+  document.getElementById('chkBacPro').checked = false;
+  document.getElementById('chkCAP').checked = false;
   document.getElementById('chkEtat').checked = false;
   document.getElementById('chkStats').checked = false;
   document.getElementById('inpEtablissement').value = '';
   document.getElementById('inpEmailPro').value = '';
-  document.getElementById('contactIntroHint').textContent = hasWeb3FormsConfig()
-    ? "Ce formulaire envoie votre demande directement à la CAHPN — aucune messagerie ne s'ouvre sur votre appareil."
-    : "Ce bouton ouvre votre messagerie avec un message pré-rempli à destination de la CAHPN. Il vous suffira de cliquer sur Envoyer dans votre messagerie pour finaliser votre demande.";
   const sendBtn = document.getElementById('btnSendContact');
   sendBtn.textContent = "✉️ Envoyer la demande";
   sendBtn.disabled = false;
@@ -767,15 +794,24 @@ document.getElementById('btnSendContact').addEventListener('click', () => {
     return;
   }
 
+  const wantBacGT = document.getElementById('chkBacGT').checked;
+  const wantBacPro = document.getElementById('chkBacPro').checked;
+  const wantCAP = document.getElementById('chkCAP').checked;
   const wantEtat = document.getElementById('chkEtat').checked;
   const wantStats = document.getElementById('chkStats').checked;
   const etab = document.getElementById('inpEtablissement').value.trim();
   const mailPro = document.getElementById('inpEmailPro').value.trim();
   errEl.textContent = '';
 
+  if (!wantBacGT && !wantBacPro && !wantCAP) { errEl.textContent = 'Sélectionnez au moins un examen.'; return; }
   if (!wantEtat && !wantStats) { errEl.textContent = 'Sélectionnez au moins une demande.'; return; }
   if (!etab) { errEl.textContent = "Merci d'indiquer le nom de votre établissement."; return; }
   if (!mailPro || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mailPro)) { errEl.textContent = "Merci d'indiquer une adresse email professionnelle valide."; return; }
+
+  const examens = [];
+  if (wantBacGT) examens.push('Bac GT');
+  if (wantBacPro) examens.push('Bac Pro');
+  if (wantCAP) examens.push('CAP');
 
   const demandes = [];
   if (wantEtat) demandes.push("- L'état des lieux de mes référentiels");
@@ -784,7 +820,7 @@ document.getElementById('btnSendContact').addEventListener('click', () => {
   const to = (CONFIG.contactEmail || '').trim();
   const dateStr = new Date().toLocaleString('fr-FR');
   const subject = `Demande d'informations CAHPN — ${etab}`;
-  const body = `Établissement : ${etab}\nEmail professionnel : ${mailPro}\n\nDemande(s) :\n${demandes.join('\n')}\n\nDate de la demande : ${dateStr}\n`;
+  const body = `Établissement : ${etab}\nEmail professionnel : ${mailPro}\n\nExamen(s) concerné(s) : ${examens.join(', ')}\n\nDemande(s) :\n${demandes.join('\n')}\n\nDate de la demande : ${dateStr}\n`;
 
   document.getElementById('contactPreview').value = `À : ${to || '(email de contact non configuré — voir Administration)'}\nObjet : ${subject}\n\n${body}`;
 
@@ -816,6 +852,7 @@ document.getElementById('btnSendContact').addEventListener('click', () => {
       from_name: etab,
       etablissement: etab,
       email_pro: mailPro,
+      examens: examens.join(', '),
       demandes: demandes.join('\n'),
       date: dateStr,
       replyto: mailPro,
@@ -1139,6 +1176,41 @@ function applyAndSave() {
   setTimeout(() => adminStatus.classList.remove('show'), 2200);
 }
 
+/* ---- Export PDF (impression) ---- */
+function buildPrintExport() {
+  const container = document.getElementById('printExport');
+  const logoSrc = document.querySelector('.top-logo') ? document.querySelector('.top-logo').src : '';
+  let html = `
+    <div class="print-header">
+      <img src="${logoSrc}" alt="">
+      <div>
+        <h1>Les Examens en EPS — Pas à pas CCF 2027</h1>
+        <p class="print-meta">CAHP Nantes — document exporté le ${new Date().toLocaleDateString('fr-FR')}</p>
+      </div>
+    </div>
+  `;
+  DATA.forEach((ph) => {
+    html += `<div class="print-phase"><h2>${ph.title}</h2>`;
+    if (ph.intro_html) html += ph.intro_html;
+    (ph.steps || []).forEach((st) => {
+      html += `<h3>${st.title}</h3>${st.html}`;
+    });
+    html += `</div>`;
+  });
+  if (INAPT && INAPT.length) {
+    html += `<div class="print-phase"><h2>🩹 Nouveautés — Inaptitudes</h2>`;
+    INAPT.forEach((item) => {
+      html += `<h3>${item.date ? esc(item.date) + ' — ' : ''}${esc(item.title)}</h3>${item.html || ''}`;
+    });
+    html += `</div>`;
+  }
+  container.innerHTML = html;
+}
+document.getElementById('btnExportPdf').addEventListener('click', () => {
+  buildPrintExport();
+  window.print();
+});
+
 const ADMIN_USER = 'Admin';
 const ADMIN_PASS = 'Quentin';
 const ADMIN_SESSION_KEY = 'ccf_eps_admin_authenticated';
@@ -1313,5 +1385,6 @@ document.getElementById('btnCheckUpdate').addEventListener('click', async () => 
   alert('Vérification effectuée. Si une nouvelle version est trouvée, un bandeau "Actualiser" apparaîtra en bas de l\'écran.');
 });
 </script>
+<div id="printExport" class="print-only"></div>
 </body>
 </html>

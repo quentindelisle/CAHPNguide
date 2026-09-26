@@ -98,6 +98,22 @@ en cache.
 
 ---
 
+## 📄 Exporter en PDF
+
+Un bouton **📄 Exporter en PDF** dans le bandeau permet à n'importe quel
+visiteur de conserver une version complète du guide (toutes les phases,
+toutes les étapes, et la page Nouveautés — Inaptitudes) sous forme de PDF.
+
+Techniquement, ce bouton déclenche l'impression du navigateur
+(`window.print()`) sur une mise en page dédiée, optimisée pour le papier
+(une phase par page, tableaux et encadrés conservés). Dans la fenêtre
+d'impression qui s'ouvre, il suffit de choisir **"Enregistrer au format
+PDF"** comme imprimante — c'est l'option proposée nativement par tous les
+navigateurs. Aucun service tiers n'est utilisé : tout se passe hors ligne,
+dans le navigateur du visiteur.
+
+---
+
 ## 📚 Banque de référentiels
 
 Un bouton **📚 Consulter la Banque de référentiels** dans le bandeau ouvre
